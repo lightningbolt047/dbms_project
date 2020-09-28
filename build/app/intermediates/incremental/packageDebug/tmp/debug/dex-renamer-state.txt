@@ -1,0 +1,4 @@
+#Mon Sep 07 18:52:44 IST 2020
+base.0=C\:\\Users\\sasha\\AndroidStudioProjects\\dairymanagement\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

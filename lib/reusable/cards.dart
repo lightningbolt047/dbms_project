@@ -121,3 +121,44 @@ class _outletCardState extends State<outletCard> {
     );
   }
 }
+
+class EmployeeCard extends StatelessWidget {
+  final String id, name;
+  EmployeeCard(this.id, this.name);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        //TODO open employee unique screen with relevant details
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.perm_identity,
+                  size: 20,
+                ),
+                sizedBoxSmallInRow,
+                Text(name),
+                SizedBox(
+                  width: 5,
+                ),
+                Text("LastName"),
+                sizedBoxLargeInRow,
+                phoneIcon,
+                sizedBoxSmallInRow,
+                Text(id),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

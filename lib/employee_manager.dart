@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'reusable/const.dart';
@@ -14,14 +16,21 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
 
   var output;
 
-  dynamic getItems() async{
+  Future<List<Widget>> getCards() async{
     RequestServer server=RequestServer(action:"select * from instructor",Qtype:"R");
     output=await server.getDecodedResponse();
+    List<Widget> _cards=[];
+    for(int i=0;i<output.length;i++){
+      _cards.add(EmployeeCard(output[i]["ID"],output[i]["name"]));
+
+    }
+    //TODO the item names are subject to change depending on the db schema
+    return _cards;
   }
 
   @override
   void initState() {
-    getItems();
+    getCards();
     super.initState();
   }
 
@@ -35,38 +44,24 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           ),
           backgroundColor: Colors.blueAccent,
         ),
-        body: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Card(
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.perm_identity,
-                        size: 20,
-                      ),
-                      sizedBoxSmallInRow,
-                      Text("FirstName"),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text("LastName"),
-                      sizedBoxLargeInRow,
-                      phoneIcon,
-                      sizedBoxSmallInRow,
-                      Text("90910913"),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+        body: FutureBuilder(
+          future: getCards(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if(snapshot.data==null){
+              return Center(
+                  child:CircularProgressIndicator(),
+              );
+            }
+            else{
+              return ListView(
+                children: snapshot.data,
+              );
+            }
+
+          },
+        )
       ),
     );
   }
 }
+

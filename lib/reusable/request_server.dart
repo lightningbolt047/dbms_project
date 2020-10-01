@@ -17,7 +17,7 @@ class RequestServer{
     http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
     if(response.statusCode==200){
       print("Connection to server success!");
-      print("This is the json output: ${response.body}");
+      //print("This is the json output: ${response.body}");
       return jsonDecode(response.body);
     }
     else{

@@ -6,6 +6,7 @@ import 'reusable/const.dart';
 import 'reusable/cards.dart';
 import 'reusable/request_server.dart';
 import 'dart:convert';
+import 'reusable/request_items.dart';
 
 class EmployeeManagerScreen extends StatefulWidget {
   @override
@@ -30,7 +31,6 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
 
   @override
   void initState() {
-    getCards();
     super.initState();
   }
 
@@ -45,6 +45,15 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           backgroundColor: Colors.blueAccent,
         ),
         floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add
+          ),
+          elevation: 3,
+          onPressed: (){
+            showModalBottomSheet(context: context, builder:(BuildContext context){
+              return RequestItemsSheet();
+            });
+          },
           //TODO This is where employee data insertion magic happens
         ),
         body: FutureBuilder(

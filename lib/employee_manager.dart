@@ -44,6 +44,9 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           ),
           backgroundColor: Colors.blueAccent,
         ),
+        floatingActionButton: FloatingActionButton(
+          //TODO This is where employee data insertion magic happens
+        ),
         body: FutureBuilder(
           future: getCards(),
           builder: (BuildContext context, AsyncSnapshot snapshot){

@@ -32,8 +32,11 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       _cards.add(outletCard("Very cool name", 10000, "2823782", 6, 0, 0, 0, 4000,"42069"),);
       _cards.add(outletCard("Not so cool name", 5000, "582378237", 6, 0, 0, 0, 3000,"96"),);
       _cards.add(outletCard("Worst name ever", 5000, "2823", 6, 0, 0, 0, 4000,"0192"),);
-      return _cards;
     }
+    else if(pageType==pageTypeList.procurementManager){
+      _cards.add(MilkProducerCard("Prodname","12033","Area","29329839",35000,1000));
+    }
+    return _cards;
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:dairymanagement/reusable/employee_unique_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'const.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class outletCard extends StatefulWidget {
@@ -159,6 +161,141 @@ class EmployeeCard extends StatelessWidget {
                 Text(id),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MilkProducerCard extends StatefulWidget {
+
+  String name,producerID,area,phoneNumber;
+  double amountPayable,givenMilk;
+
+  MilkProducerCard(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+  @override
+  _MilkProducerCardState createState() => _MilkProducerCardState(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+}
+
+class _MilkProducerCardState extends State<MilkProducerCard> {
+  String name,producerID,area,phoneNumber;
+  double amountPayable,getMilk=0,givenMilk;
+
+  _MilkProducerCardState(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+
+
+
+  Function getAmountPayFunction(){
+    return (){
+      setState(() {
+        //TODO Execute sql commands to reduce amount payable to 0 in table (Pay the producer)
+        amountPayable=0;
+      });
+    };
+  }
+
+  String getAmountPayButtonText(){
+    if(amountPayable==0){
+      return "Amount Paid";
+    }
+    else{
+      return "Pay Producer: $amountPayable";
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 3,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              sizedBoxInColumn,
+              Row(
+                children: [
+                  phoneIcon,
+                  sizedBoxSmallInRow,
+                  Text(
+                    phoneNumber,
+                  ),
+                  sizedBoxLargeInRow,
+                  idIcon,
+                  sizedBoxSmallInRow,
+                  Text(producerID),
+                ],
+              ),
+              sizedBoxInColumn,
+              Text(
+                "Area: $area"
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Get Milk: $getMilk",
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action:(){
+                      setState(() {
+                        if(getMilk<50000){
+                          getMilk+=1000;
+                        }
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action:(){
+                      setState(() {
+                        if(getMilk>0){
+                          getMilk-=500;
+                        }
+                      });
+                    }),
+                  ),
+                ],
+              ),
+              Text(
+                "Procured Milk: $givenMilk"
+              ),
+              Row(
+                children: [
+                  FlatButton(
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text("Procure Milk"),
+                    onPressed: (){
+                      //TODO Execute corresponding sql commands
+                      setState(() {
+                        givenMilk+=getMilk;
+                        amountPayable+=getMilk*milkRate;
+                        getMilk=0;
+                      });
+                    } ,
+                  ),
+                  sizedBoxLargeInRow,
+                  FlatButton(
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text(getAmountPayButtonText()),
+                    onPressed: (amountPayable!=0)?getAmountPayFunction():null,
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

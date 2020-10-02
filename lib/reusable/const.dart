@@ -32,3 +32,25 @@ var idIcon = Icon(
 var sizedBoxInColumn = SizedBox(
   height: 10,
 );
+
+double milkRate=35;
+
+class RoundActionButton extends StatelessWidget {
+  final Widget child;
+  final Function action;
+  RoundActionButton({@required this.child, this.action});
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: child,
+      shape: CircleBorder(),
+      onPressed: action,
+      fillColor: Colors.blueAccent,
+      elevation: 5,
+      constraints: BoxConstraints.tightFor(
+        height:35.0,
+        width: 35.0,
+      ),
+    );
+  }
+}

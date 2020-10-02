@@ -2,6 +2,7 @@ import 'package:dairymanagement/reusable/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'const.dart';
 
 class RequestItemsSheet extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: (){
                       setState(() {
-                        //TODO Execute SQL query to modify values for the outlet
+                        //TODO Execute SQL query to modify values for the outlet (Place request for new stocks)
                         return;
                       });
                     },),
@@ -191,22 +192,3 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
   }
 }
 
-class RoundActionButton extends StatelessWidget {
-  final Widget child;
-  final Function action;
-  RoundActionButton({@required this.child, this.action});
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: child,
-      shape: CircleBorder(),
-      onPressed: action,
-      fillColor: Colors.blueAccent,
-      elevation: 5,
-      constraints: BoxConstraints.tightFor(
-        height:35.0,
-        width: 35.0,
-      ),
-    );
-  }
-}

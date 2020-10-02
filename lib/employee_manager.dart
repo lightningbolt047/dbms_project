@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:dairymanagement/reusable/add_new_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'reusable/const.dart';
@@ -50,11 +51,15 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           ),
           elevation: 3,
           onPressed: (){
-            showModalBottomSheet(context: context, builder:(BuildContext context){
-              return RequestItemsSheet();
-            });
+          /*  Navigator.push(context,MaterialPageRoute(builder: (context){
+              return AddDetails(pageTypeList.employeeManager);
+            }));*/
+
+          showModalBottomSheet(context: context, builder:(context){
+            return AddDetails(pageTypeList.employeeManager);
+          });
           },
-          //TODO This is where employee data insertion magic happens
+          //TODO This is where employee data insertion happens
         ),
         body: FutureBuilder(
           future: getCards(),

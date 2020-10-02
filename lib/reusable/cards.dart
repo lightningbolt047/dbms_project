@@ -278,7 +278,7 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                     textColor: Colors.white,
                     child: Text("Procure Milk"),
                     onPressed: (){
-                      //TODO Execute corresponding sql commands
+                      //TODO Execute corresponding sql commands + Add in current availability!!!
                       setState(() {
                         givenMilk+=getMilk;
                         amountPayable+=getMilk*milkRate;

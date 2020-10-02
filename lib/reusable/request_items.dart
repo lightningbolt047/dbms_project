@@ -36,6 +36,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: (){
                       setState(() {
+                        //TODO Execute SQL query to modify values for the outlet
                         return;
                       });
                     },),

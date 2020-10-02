@@ -1,3 +1,4 @@
+import 'package:dairymanagement/reusable/employee_unique_screen.dart';
 import 'package:flutter/material.dart';
 import 'const.dart';
 
@@ -130,7 +131,9 @@ class EmployeeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        //TODO open employee unique screen with relevant details
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return EmployeeUniqueScreen("Firstname","lastname","923834923","20-Jul-2012","19201","Milk2Butter","This is address text",60000,20000,true);
+        }));
       },
       child: Padding(
         padding: const EdgeInsets.all(5.0),

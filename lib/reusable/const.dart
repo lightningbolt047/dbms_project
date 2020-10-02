@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 
 String url="http://localhost:80/index.php";
 
+enum pageTypeList{
+  outletManager,
+  employeeManager,
+  procurementManager,
+}
+
 var phoneIcon=Icon(
   Icons.phone,
   size: 15,

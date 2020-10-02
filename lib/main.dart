@@ -1,9 +1,10 @@
 import 'package:dairymanagement/adminPage.dart';
 import 'package:flutter/material.dart';
 import 'reusable/LogInButton.dart';
-import 'outlet_manager.dart';
+import 'reusable/multi_manager_screen.dart';
 import 'package:dairymanagement/employee_manager.dart';
 import 'reusable/employee_unique_screen.dart';  //tis for check
+import 'reusable/const.dart'; //tis for check
 
 void main() {
   runApp(Login());

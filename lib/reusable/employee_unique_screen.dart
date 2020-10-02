@@ -6,12 +6,37 @@ import 'const.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeUniqueScreen extends StatefulWidget {
+  String firstName,lastName,phoneNumber,dateOfJoin,id,job,address;
+  double salary,amountPayable;
+  bool mutable;
+  EmployeeUniqueScreen(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
   @override
-  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState();
+  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
 }
 
 class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
+  String firstName,lastName,phoneNumber,dateOfJoin,id,job,address;
+  double salary,amountPayable;
+  bool mutable;
 
+  _EmployeeUniqueScreenState(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+
+  Function getCreditSalaryFunction(){
+    return (){
+      setState(() {
+        amountPayable=0;
+      });
+    };
+  }
+
+  String getCreditSalaryButtonText(){
+    if(amountPayable==0){
+      return "Salary Credited";
+    }
+    else{
+      return 'Credit Salary: $amountPayable';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +84,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                              Text("FirstName LastName",
+                              Text("$firstName $lastName",
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -75,7 +100,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("01101",
+                                Text(id,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -91,7 +116,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("9837472224",
+                                Text(phoneNumber,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -115,7 +140,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("20 Jul 2017",
+                                Text(dateOfJoin,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -131,7 +156,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("20000",
+                                Text("$salary",
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -147,7 +172,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("Milk2Butter",
+                                Text(job,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -171,7 +196,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                                Text("20th House, Nth Street, Area 51, Country0",
+                                Text(address,
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
@@ -191,15 +216,33 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FlatButton(
-                                  color: Colors.blueAccent,
-                                  textColor: Colors.white,
-                                  child: Text("Credit salary: 20000",
-                                  style: TextStyle(
-                                    fontSize: 20,
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(0,0,5,0),
+                                  child: FlatButton(
+                                    color: Colors.blueAccent,
+                                    textColor: Colors.white,
+                                    child: Text(getCreditSalaryButtonText(),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                    ),
+                                    onPressed: (mutable && amountPayable>0)?getCreditSalaryFunction():null ,
                                   ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5,0,0,0),
+                                  child: FlatButton(
+                                    color: Colors.blueAccent,
+                                    textColor: Colors.white,
+                                    child: Text("Cancel",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
                                   ),
-                                  onPressed: null ,
                                 ),
                               ],
                             ),

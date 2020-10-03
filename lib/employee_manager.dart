@@ -53,10 +53,10 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           onPressed: (){
           /*  Navigator.push(context,MaterialPageRoute(builder: (context){
               return AddDetails(pageTypeList.employeeManager);
-            }));*/
+            })); */
 
           showModalBottomSheet(context: context, builder:(context){
-            return AddDetails(pageTypeList.employeeManager);
+            return AddDetails(pageTypeList.employeeManager);  //Temp testing
           });
           },
           //TODO This is where employee data insertion happens

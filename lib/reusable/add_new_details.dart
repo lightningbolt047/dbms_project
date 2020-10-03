@@ -16,6 +16,9 @@ class _AddDetailsState extends State<AddDetails> {
   String _empID,_firstName,_lastName,_phoneNumber,_job,_dateOfJoin,_address;
   double _salary,_amountPayable=0;
 
+  String _outletName,_outletPhoneNumber,_area,_outletID;
+  double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
+
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
@@ -24,7 +27,7 @@ class _AddDetailsState extends State<AddDetails> {
         padding: EdgeInsets.all(8),
         child: Card(
           elevation: 3,
-          child: Column(
+          child: ListView(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -119,7 +122,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,2,0),
                         width: 200,
                         child: TextField(
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
                             labelText: "Date of Join",
                           ),
@@ -178,11 +181,221 @@ class _AddDetailsState extends State<AddDetails> {
         ),
       );
     }
+    if(pageType==pageTypeList.outletManager){
+      return Padding(
+        padding: EdgeInsets.all(8),
+        child: Card(
+          elevation: 3,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Outlet Name: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Enter Outlet Name",
+                          ),
+                          onChanged: (string){
+                            _outletName=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    Text("Phone Number: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: "Outlet Phone Number",
+                          ),
+                          onChanged: (string){
+                            _outletPhoneNumber=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    Text("Outlet ID: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,2,0),
+                        width: 200,
+                        child: TextField(
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: "Outlet ID",
+                          ),
+                          onChanged: (string){
+                            _outletID=string;
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text("Send Milk: $_reqMilk "),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqMilk<=5000){
+                                  _reqMilk+=10;
+                                }
+                              });
+                            }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqMilk>0){
+                                  _reqMilk-=10;
+                                }
+                              });
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text("Send Butter: $_reqButter "),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqButter<=5000){
+                                  _reqButter+=10;
+                                }
+                              });
+                            }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqButter>0){
+                                  _reqButter-=10;
+                                }
+                              });
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text("Send Cheese: $_reqCheese "),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqCheese<=5000){
+                                  _reqCheese+=10;
+                                }
+                              });
+                            }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqCheese>0){
+                                  _reqCheese-=10;
+                                }
+                              });
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text("Send Yogurt: $_reqYogurt "),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqYogurt<=5000){
+                                  _reqYogurt+=10;
+                                }
+                              });
+                            }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action: (){
+                              setState(() {
+                                if(_reqYogurt>0){
+                                  _reqYogurt-=10;
+                                }
+                              });
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Area: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Outlet Location",
+                          ),
+                          onChanged: (string){
+                            _area=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                      Navigator.pop(context);
+                    },),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   String getAppBarText(){
     if(pageType==pageTypeList.employeeManager){
       return "Add new Employee";
+    }
+    if(pageType==pageTypeList.outletManager){
+      return "Add new Outlet";
     }
     return "Non Null AppBar name";
   }

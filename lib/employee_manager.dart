@@ -74,7 +74,6 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
                 children: snapshot.data,
               );
             }
-
           },
         )
       ),

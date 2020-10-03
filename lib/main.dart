@@ -63,7 +63,7 @@ class Login extends StatelessWidget {
                 LoginButton((){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => EmployeeManagerScreen())
+                      MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.outletManager))
                   );
                   //TODO verify login and open user activity
                 }),

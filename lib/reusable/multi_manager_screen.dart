@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'const.dart';
 import 'cards.dart';
+import 'add_new_details.dart';
 
 
 class MultiManagerScreen extends StatefulWidget {
@@ -39,6 +41,24 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     return _cards;
   }
 
+  Function getFloatingActionButtonAction(){
+    if(pageType==pageTypeList.outletManager){
+      return (){
+        showModalBottomSheet(context: context, builder:(context){
+          return AddDetails(pageTypeList.outletManager);  //Temp testing
+        });
+      };
+    }
+    if(pageType==pageTypeList.procurementManager){
+      return (){
+        print("Not yet defined");
+      };
+    }
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,6 +68,14 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
             getAppBarText()
           ),
           backgroundColor: Colors.blueAccent,
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            FontAwesomeIcons.plus,
+            color: Colors.white,
+          ),
+          elevation: 3,
+          onPressed: getFloatingActionButtonAction(),
         ),
         body: FutureBuilder(
           future: getCards(),

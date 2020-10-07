@@ -134,7 +134,7 @@ class EmployeeCard extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return EmployeeUniqueScreen("Firstname","lastname","923834923","20-Jul-2012","19201","Milk2Butter","This is address text",60000,20000,true);
+          return EmployeeUniqueScreen("Name","923834923","20-Jul-2012","19201","Milk2Butter","This is address text",60000,20000,true);
         }));
       },
       child: Padding(

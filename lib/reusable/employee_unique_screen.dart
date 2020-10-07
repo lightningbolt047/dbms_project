@@ -6,20 +6,20 @@ import 'const.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeUniqueScreen extends StatefulWidget {
-  String firstName,lastName,phoneNumber,dateOfJoin,id,job,address;
+  String name,phoneNumber,dateOfJoin,id,job,address;
   double salary,amountPayable;
   bool mutable;
-  EmployeeUniqueScreen(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  EmployeeUniqueScreen(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
   @override
-  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
 }
 
 class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
-  String firstName,lastName,phoneNumber,dateOfJoin,id,job,address;
+  String name,phoneNumber,dateOfJoin,id,job,address;
   double salary,amountPayable;
   bool mutable;
 
-  _EmployeeUniqueScreenState(this.firstName,this.lastName,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  _EmployeeUniqueScreenState(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
 
   Function getCreditSalaryFunction(){
     return (){
@@ -84,7 +84,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                   size: 40,
                                 ),
                                 sizedBoxSmallInRow,
-                              Text("$firstName $lastName",
+                              Text(name,
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),

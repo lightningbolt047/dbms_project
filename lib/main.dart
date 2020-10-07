@@ -12,6 +12,34 @@ void main() {
 
 class Login extends StatelessWidget {
   String _inputUsername,_inputPassword;
+  dynamic _evalStatus=evalCredentialTypes.firstAttempt;
+
+  Function getLoginEvaluationFunction(BuildContext context){
+    return (){
+      if(_inputUsername!="test" || _inputPassword!="password"){
+        _evalStatus=evalCredentialTypes.wrongCredentials;
+      }
+      else{
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EmployeeManagerScreen())
+        );
+      }
+    };
+  }
+
+  dynamic getLoginButton(BuildContext context){
+    if(_evalStatus==evalCredentialTypes.firstAttempt || _evalStatus==evalCredentialTypes.evalSuccess){
+      return LoginButton(getLoginEvaluationFunction(context),Colors.blueAccent,"Log In");
+    }
+    if(_evalStatus==evalCredentialTypes.absentCredential){
+      return LoginButton(getLoginEvaluationFunction(context),Colors.redAccent,"Username or password missing! Try Again");
+    }
+    if(_evalStatus==evalCredentialTypes.wrongCredentials){
+      return LoginButton(getLoginEvaluationFunction(context),Colors.redAccent, "Wrong username and password! Try Again");
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

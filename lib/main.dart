@@ -10,7 +10,13 @@ void main() {
   runApp(Login());
 }
 
-class Login extends StatelessWidget {
+
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   String _inputUsername,_inputPassword;
   @override
   Widget build(BuildContext context) {
@@ -60,21 +66,16 @@ class Login extends StatelessWidget {
                 SizedBox(
                   height:30,
                 ),
-                LoginButton((){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EmployeeManagerScreen())
-                  );
-                  //TODO verify login and open user activity
-                }),
+                LoginButton(context,_inputUsername,_inputPassword),
               ],
             ),
           ),
         ),
       ),
-      );
+    );
   }
 }
+
 
 
 

@@ -8,6 +8,14 @@ enum pageTypeList{
   procurementManager,
 }
 
+enum userEvalStatusTypes{
+  firstAttempt,
+  missingCredentials,
+  wrongCredentials,
+  userDNE,
+  evalSuccess
+}
+
 var phoneIcon=Icon(
   Icons.phone,
   size: 15,

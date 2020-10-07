@@ -10,8 +10,17 @@ void main() {
   runApp(Login());
 }
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   String _inputUsername,_inputPassword;
+  dynamic evalStatus=userEvalStatusTypes.firstAttempt;
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,7 +53,6 @@ class Login extends StatelessWidget {
                   ),
                   onChanged: (string){
                     _inputUsername=string;
-                    print(_inputUsername);
                   },
                 ),
                 TextField(
@@ -53,7 +61,6 @@ class Login extends StatelessWidget {
                   ),
                   onChanged: (string){
                     _inputPassword=string;
-                    print(_inputPassword);
                   },
                   obscureText: true,
                 ),
@@ -61,18 +68,35 @@ class Login extends StatelessWidget {
                   height:30,
                 ),
                 LoginButton((){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EmployeeManagerScreen())
-                  );
-                  //TODO verify login and open user activity
-                }),
+                  setState(() {
+                    if(_inputUsername==null || _inputPassword==null){
+                      evalStatus=userEvalStatusTypes.missingCredentials;
+                    }
+                    else if(_inputUsername=='sas047' /*Dummy condition, irl, we'll check if _inputUsername exists in the table*/){
+                      if(_inputUsername=='sas047' && _inputPassword=='hello' /*Dummy condition! IRL, we'll check if _inputUsername matches _inputPassword*/){
+                        evalStatus=userEvalStatusTypes.evalSuccess;
+                        //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EmployeeManagerScreen()
+                            )
+                        );
+                      }
+                      else{
+                        evalStatus=userEvalStatusTypes.wrongCredentials;
+                      }
+                    }
+                    else{
+                      evalStatus=userEvalStatusTypes.userDNE;
+                    }
+                  });
+                },evalStatus),
               ],
             ),
           ),
         ),
       ),
-      );
+    );
   }
 }
 

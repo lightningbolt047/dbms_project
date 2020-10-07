@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
   final Function function;
-  final color;
-  final text;
-  LoginButton(this.function,this.color,this.text);
+  LoginButton(this.function);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -15,10 +13,8 @@ class LoginButton extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(text,style: TextStyle(
+          child: Text("Log In",style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600
           ),),
         ),
       ),

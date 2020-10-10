@@ -52,7 +52,10 @@ class _LoginState extends State<Login> {
                     labelText: "Enter your username",
                   ),
                   onChanged: (string){
-                    _inputUsername=string;
+                    setState(() {
+                      _inputUsername=string;
+                      evalStatus=userEvalStatusTypes.firstAttempt;
+                    });
                   },
                 ),
                 TextField(
@@ -60,7 +63,10 @@ class _LoginState extends State<Login> {
                     labelText: "Enter your password",
                   ),
                   onChanged: (string){
-                    _inputPassword=string;
+                    setState(() {
+                      _inputPassword=string;
+                      evalStatus=userEvalStatusTypes.firstAttempt;
+                    });
                   },
                   obscureText: true,
                 ),
@@ -78,7 +84,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EmployeeManagerScreen()
+                            MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.outletManager)
                             )
                         );
                       }

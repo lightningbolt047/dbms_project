@@ -8,13 +8,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill" beforeDir="false" afterPath="$PROJECT_DIR$/build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/reusable/LogInButton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/LogInButton.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/reusable/const.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/const.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="dairymanagement" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -113,25 +114,25 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="498" y="234" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1601294015819" />
-    <state width="1236" height="159" key="GridCell.Tab.0.bottom" timestamp="1602091783470">
+    <state width="1236" height="153" key="GridCell.Tab.0.bottom" timestamp="1602244146002">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="159" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1602091783470" />
+    <state width="1236" height="153" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1602244146002" />
     <state width="1323" height="177" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="159" key="GridCell.Tab.0.center" timestamp="1602091783469">
+    <state width="1236" height="153" key="GridCell.Tab.0.center" timestamp="1602244146001">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="159" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1602091783469" />
+    <state width="1236" height="153" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1602244146001" />
     <state width="1323" height="177" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="159" key="GridCell.Tab.0.left" timestamp="1602091783469">
+    <state width="1236" height="153" key="GridCell.Tab.0.left" timestamp="1602244146001">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="159" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1602091783469" />
+    <state width="1236" height="153" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1602244146001" />
     <state width="1323" height="177" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="159" key="GridCell.Tab.0.right" timestamp="1602091783469">
+    <state width="1236" height="153" key="GridCell.Tab.0.right" timestamp="1602244146001">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="159" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1602091783469" />
+    <state width="1236" height="153" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1602244146001" />
     <state width="1323" height="177" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
     <state x="172" y="0" key="SettingsEditor" timestamp="1601623198611">
       <screen x="0" y="0" width="1280" height="680" />
@@ -143,10 +144,10 @@
     </state>
     <state x="86" y="86" width="1108" height="509" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1280.680@0.0.1280.680" timestamp="1601963403033" />
     <state x="92" y="92" width="1182" height="544" key="com.android.tools.idea.avdmanager.AvdListDialog/0.0.1366.728@0.0.1366.728" timestamp="1598955648432" />
-    <state x="355" y="175" key="com.intellij.ide.util.TipDialog" timestamp="1602087890484">
+    <state x="355" y="175" key="com.intellij.ide.util.TipDialog" timestamp="1602230717356">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="355" y="175" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1602087890484" />
+    <state x="355" y="175" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1602230717356" />
     <state x="379" y="187" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1599733054740" />
     <state x="450" y="258" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601301525793">
       <screen x="0" y="0" width="1280" height="680" />

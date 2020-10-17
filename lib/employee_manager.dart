@@ -19,11 +19,11 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
   var output;
 
   Future<List<Widget>> getCards() async{
-    RequestServer server=RequestServer(action:"select * from instructor",Qtype:"R");
+    RequestServer server=RequestServer(action:"select * from Employees",Qtype:"R");
     output=await server.getDecodedResponse();
     List<Widget> _cards=[];
     for(int i=0;i<output.length;i++){
-      _cards.add(EmployeeCard(output[i]["ID"],output[i]["name"]));
+      _cards.add(EmployeeCard(output[i]["EmpID"],output[i]["Name"]));
 
     }
     //TODO the item names are subject to change depending on the db schema

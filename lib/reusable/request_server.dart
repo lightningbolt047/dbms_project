@@ -11,9 +11,6 @@ class RequestServer{
 
   var response;
   Future getDecodedResponse() async{
-    var map = Map<String,dynamic>();
-    map['action']="select * from teaches";
-    map['Qtype']="R";
     http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
     if(response.statusCode==200){
       print("Connection to server success!");

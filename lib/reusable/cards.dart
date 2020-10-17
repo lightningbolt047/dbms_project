@@ -1,22 +1,45 @@
+import 'package:dairymanagement/reusable/add_new_details.dart';
 import 'package:dairymanagement/reusable/employee_unique_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'const.dart';
+import 'request_server.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
-class outletCard extends StatefulWidget {
-  String outletName,phoneNumber,outletID;
-  double reqMilk,reqYogurt,reqCheese,reqButter,amountPayable,totalIncome;
-  outletCard(this.outletName,this.amountPayable,this.phoneNumber,this.reqButter,this.reqCheese,this.reqMilk,this.reqYogurt,this.totalIncome,this.outletID);
+class OutletCard extends StatefulWidget {
+  String username,outletID;
+  OutletCard(this.username,this.outletID);
   @override
-  _outletCardState createState() => _outletCardState(this.outletName,this.amountPayable,this.phoneNumber,this.reqButter,this.reqCheese,this.reqMilk,this.reqYogurt,this.totalIncome,this.outletID);
+  _OutletCardState createState() => _OutletCardState(this.username,this.outletID);
 }
 
-class _outletCardState extends State<outletCard> {
-  String outletName,phoneNumber,outletID;
-  double reqMilk,reqYogurt,reqCheese,reqButter,amountPayable,totalIncome;
-  _outletCardState(this.outletName,this.amountPayable,this.phoneNumber,this.reqButter,this.reqCheese,this.reqMilk,this.reqYogurt,this.totalIncome,this.outletID);
+class _OutletCardState extends State<OutletCard> {
+  String username="",area="";
+  String outletName="",phoneNumber="",outletID="";
+  double reqMilk=0,reqYogurt=0,reqCheese=0,reqButter=0,amountPayable=0,totalIncome=0;
+  _OutletCardState(this.username,this.outletID);
+  String _inputPassword;
+
+
+
+  Future<bool> populateData() async{
+    RequestServer server = RequestServer(action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID and Outlets.outID=$outletID;", Qtype: "R");
+    var items= await server.getDecodedResponse();
+    setState(() {
+      outletName=items[0]["Outlet_name"];
+      phoneNumber=items[0]["PhoneNumber"];
+      outletID=items[0]["outID"];
+      area=items[0]["Area"];
+      amountPayable=double.parse(items[0]["AmountPayable"]);
+      reqButter=double.parse(items[0]["ReqButter"]);
+      reqCheese=double.parse(items[0]["ReqCheese"]);
+      reqMilk=double.parse(items[0]["ReqMilk"]);
+      reqYogurt=double.parse(items[0]["ReqYogurt"]);
+      totalIncome=double.parse(items[0]["TotalIncome"]);
+    });
+    return true;
+  }
 
   String getDeliverStockText(){
     if((reqMilk+reqCheese+reqYogurt+reqButter)==0){
@@ -47,14 +70,28 @@ class _outletCardState extends State<outletCard> {
   }
 
   Function getAmountPayFunction(){
-    return (){
+    return () async{
+        //TODO Invoke password confirmation and then perform sql fns
+      /*Navigator.push(context,
+      MaterialPageRoute(builder: (context)=> PasswordConfirm()));*/
+      final _returnedData= await showModalBottomSheet(context: context, builder:(context){
+        return PasswordConfirm();  //Temp testing
+      });
+      _inputPassword=_returnedData;
+      print(_inputPassword);  //This is temporary, we will do work with it
       setState(() {
-        //TODO Perform sql functions here
         amountPayable=0;
       });
+      
     };
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,63 +100,63 @@ class _outletCardState extends State<outletCard> {
       child: Card(
         elevation: 3,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                outletName,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w400,
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "$outletName, $area",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    sizedBoxInColumn,
+                    Row(
+                      children: [
+                        phoneIcon,
+                        sizedBoxSmallInRow,
+                        Text(
+                          phoneNumber,
+                        ),
+                        sizedBoxLargeInRow,
+                        idIcon,
+                        sizedBoxSmallInRow,
+                        Text(outletID),
+                      ],
+                    ),
+                    Text(
+                      "Required Milk: $reqMilk",
+                    ),
+                    Text(
+                      "Required Yogurt: $reqYogurt",
+                    ),
+                    Text(
+                      "Required Butter: $reqButter",
+                    ),
+                    Text(
+                      "Required Cheese: $reqCheese",
+                    ),
+                    Row(
+                      children: [
+                        FlatButton(
+                          color: Colors.blueAccent,
+                          textColor: Colors.white,
+                          child: Text(getDeliverStockText()),
+                          onPressed: ((reqMilk+reqCheese+reqYogurt+reqButter)==0)?null:getDeliverStockFunction() ,
+                        ),
+                        sizedBoxLargeInRow,
+                        FlatButton(
+                          color: Colors.blueAccent,
+                          textColor: Colors.white,
+                          child: Text(getAmountPayText()),
+                          onPressed: (amountPayable==0)?null:getAmountPayFunction(),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-              ),
-              sizedBoxInColumn,
-              Row(
-                children: [
-                  phoneIcon,
-                  sizedBoxSmallInRow,
-                  Text(
-                      phoneNumber,
-                  ),
-                  sizedBoxLargeInRow,
-                  idIcon,
-                  sizedBoxSmallInRow,
-                  Text(outletID),
-                ],
-              ),
-              Text(
-                  "Required Milk: $reqMilk",
-              ),
-              Text(
-                  "Required Yogurt: $reqYogurt",
-              ),
-              Text(
-                  "Required Butter: $reqButter",
-              ),
-              Text(
-                  "Required Cheese: $reqCheese",
-              ),
-              Row(
-                children: [
-                  FlatButton(
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    child: Text(getDeliverStockText()),
-                    onPressed: ((reqMilk+reqCheese+reqYogurt+reqButter)==0)?null:getDeliverStockFunction() ,
-                  ),
-                  sizedBoxLargeInRow,
-                  FlatButton(
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    child: Text(getAmountPayText()),
-                    onPressed: (amountPayable==0)?null:getAmountPayFunction(),
-                  ),
-                ],
               )
-            ],
-          ),
-        ),
       ),
     );
   }

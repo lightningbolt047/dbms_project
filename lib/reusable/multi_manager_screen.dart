@@ -3,19 +3,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'const.dart';
 import 'cards.dart';
 import 'add_new_details.dart';
+import 'request_server.dart';
 
 
 class MultiManagerScreen extends StatefulWidget {
   final pageType;
-  MultiManagerScreen(this.pageType);
+  final String username;
+  MultiManagerScreen(this.pageType, this.username);
   @override
-  _MultiManagerScreenState createState() => _MultiManagerScreenState(pageType);
+  _MultiManagerScreenState createState() => _MultiManagerScreenState(pageType,username);
 }
 
 class _MultiManagerScreenState extends State<MultiManagerScreen> {
   final pageType;
+  final String username;
 
-  _MultiManagerScreenState(this.pageType);
+  _MultiManagerScreenState(this.pageType,this.username);
 
   String getAppBarText(){
     if(pageType==pageTypeList.outletManager){
@@ -27,16 +30,21 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     return "No text available";
   }
 
-  Future<List> getCards() async{
+  Future<List<Widget>> getCards() async{
     List<Widget> _cards=[];
     if(pageType==pageTypeList.outletManager){
-      //TODO add page specific sql query here
-      _cards.add(outletCard("Very cool name", 10000, "2823782", 6, 0, 0, 0, 4000,"42069"),);
-      _cards.add(outletCard("Not so cool name", 5000, "582378237", 6, 0, 0, 0, 3000,"96"),);
-      _cards.add(outletCard("Worst name ever", 5000, "2823", 6, 0, 0, 0, 4000,"0192"),);
+      RequestServer server= RequestServer(action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID;",Qtype: "R");
+      var items=await server.getDecodedResponse();
+      for(int i=0;i<items.length;i++){
+        print(items[i]["outID"]);
+        _cards.add(OutletCard(username,items[i]["outID"]));
+        i++;
+      }
     }
     else if(pageType==pageTypeList.procurementManager){
-      _cards.add(MilkProducerCard("Prodname","12033","Area","29329839",35000,1000));
+      for(int i=0;i<5;i++){
+        _cards.add(MilkProducerCard("Prodname","12033","Area","29329839",35000,1000));
+      }
     }
     return _cards;
   }

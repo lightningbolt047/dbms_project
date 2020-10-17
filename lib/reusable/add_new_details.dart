@@ -415,3 +415,66 @@ class _AddDetailsState extends State<AddDetails> {
     );
   }
 }
+
+class PasswordConfirm extends StatefulWidget {
+  @override
+  _PasswordConfirmState createState() => _PasswordConfirmState();
+}
+
+class _PasswordConfirmState extends State<PasswordConfirm> {
+  String _password;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              "Confirm Your password"
+          ),
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(8),
+          child: Card(
+            elevation: 3,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text("Enter your password to confirm: "),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(1,0,30,0),
+                          //width: 200,
+                          child: TextField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: "Your password",
+                            ),
+                            onChanged: (string){
+                              _password=string;
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child:RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,), action: (){
+                          Navigator.pop(context, _password);
+                        },),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ), //This container is temp, widget get from function
+      ),
+    );
+  }
+}
+

@@ -38,12 +38,13 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       for(int i=0;i<items.length;i++){
         print(items[i]["outID"]);
         _cards.add(OutletCard(username,items[i]["outID"]));
-        i++;
       }
     }
     else if(pageType==pageTypeList.procurementManager){
-      for(int i=0;i<5;i++){
-        _cards.add(MilkProducerCard("Prodname","12033","Area","29329839",35000,1000));
+      RequestServer server=RequestServer(action: "select * from MilkProducer",Qtype: "R");
+      var items=await server.getDecodedResponse();
+      for(int i=0;i<items.length;i++){
+        _cards.add(MilkProducerCard(items[i]["Name"],items[i]["ProducerID"],items[i]["Area"],items[i]["PhoneNumber"],double.parse(items[i]["AmountPayable"]),double.parse(items[i]["Litres"])));
       }
     }
     return _cards;

@@ -95,6 +95,14 @@ class _OutletCardState extends State<OutletCard> {
 
   @override
   Widget build(BuildContext context) {
+    if(outletName==""){
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(

@@ -171,15 +171,15 @@ class _OutletCardState extends State<OutletCard> {
 }
 
 class EmployeeCard extends StatelessWidget {
-  final String id, name;
-  EmployeeCard(this.id, this.name);
+  final String id, username,name, phoneNumber;
+  EmployeeCard(this.username,this.id, this.name, this.phoneNumber);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return EmployeeUniqueScreen("Name","923834923","20-Jul-2012","19201","Milk2Butter","This is address text",60000,20000,true);
+          return EmployeeUniqueScreen(username,id,true);
         }));
       },
       child: Padding(
@@ -191,7 +191,7 @@ class EmployeeCard extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  Icons.perm_identity,
+                  Icons.drive_file_rename_outline,
                   size: 20,
                 ),
                 sizedBoxSmallInRow,
@@ -199,11 +199,17 @@ class EmployeeCard extends StatelessWidget {
                 SizedBox(
                   width: 5,
                 ),
-                Text("LastName"),
+                sizedBoxLargeInRow,
+                Icon(
+                  Icons.perm_identity,
+                  size:20
+                ),
+                sizedBoxSmallInRow,
+                Text(id),
                 sizedBoxLargeInRow,
                 phoneIcon,
                 sizedBoxSmallInRow,
-                Text(id),
+                Text(phoneNumber),
               ],
             ),
           ),
@@ -215,24 +221,41 @@ class EmployeeCard extends StatelessWidget {
 
 class MilkProducerCard extends StatefulWidget {
 
-  String name,producerID,area,phoneNumber;
-  double amountPayable,givenMilk;
+  String username,producerID;
 
-  MilkProducerCard(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+  MilkProducerCard(this.username,this.producerID);
   @override
-  _MilkProducerCardState createState() => _MilkProducerCardState(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+  _MilkProducerCardState createState() => _MilkProducerCardState(this.username,this.producerID);
 }
 
 class _MilkProducerCardState extends State<MilkProducerCard> {
-  String name,producerID,area,phoneNumber;
-  double amountPayable,getMilk=0,givenMilk;
+  String username="",name="",producerID="",area="",phoneNumber="";
+  double amountPayable=0,getMilk=0,givenMilk;
+  String _inputPassword;
 
-  _MilkProducerCardState(this.name,this.producerID,this.area,this.phoneNumber,this.amountPayable,this.givenMilk);
+  _MilkProducerCardState(this.username,this.producerID);
+
+  Future<bool> populateData() async{
+    RequestServer server = RequestServer(action: "select * from MilkProducer where ProducerID=$producerID", Qtype: "R");
+    var items= await server.getDecodedResponse();
+    setState(() {
+      name=items[0]["Name"];
+      phoneNumber=items[0]["PhoneNumber"];
+      area=items[0]["Area"];
+      amountPayable=double.parse(items[0]["AmountPayable"]);
+      givenMilk=double.parse(items[0]["Litres"]);
+    });
+    return true;
+  }
 
 
 
   Function getAmountPayFunction(){
-    return (){
+    return () async{
+      final _returnedData= await showModalBottomSheet(context: context, builder:(context){
+        return PasswordConfirm();  //Temp testing
+      });
+      _inputPassword=_returnedData;
       setState(() {
         //TODO Execute sql commands to reduce amount payable to 0 in table (Pay the producer)
         amountPayable=0;
@@ -249,9 +272,24 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
     }
   }
 
+  @override
+  void initState(){
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    if(name==""){
+      return Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(

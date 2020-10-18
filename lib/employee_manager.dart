@@ -10,23 +10,24 @@ import 'dart:convert';
 import 'reusable/request_items.dart';
 
 class EmployeeManagerScreen extends StatefulWidget {
+  String username;
+  EmployeeManagerScreen(this.username);
   @override
-  _EmployeeManagerScreenState createState() => _EmployeeManagerScreenState();
+  _EmployeeManagerScreenState createState() => _EmployeeManagerScreenState(this.username);
 }
 
 class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
-
+  String username="";
   var output;
+  _EmployeeManagerScreenState(this.username);
 
   Future<List<Widget>> getCards() async{
-    RequestServer server=RequestServer(action:"select * from Employees",Qtype:"R");
+    RequestServer server=RequestServer(action:"select EmpID,Name,PhoneNumber from Employees",Qtype:"R");
     output=await server.getDecodedResponse();
     List<Widget> _cards=[];
     for(int i=0;i<output.length;i++){
-      _cards.add(EmployeeCard(output[i]["EmpID"],output[i]["Name"]));
-
+      _cards.add(EmployeeCard(username,output[i]["EmpID"],output[i]["Name"],output[i]["PhoneNumber"]));
     }
-    //TODO the item names are subject to change depending on the db schema
     return _cards;
   }
 

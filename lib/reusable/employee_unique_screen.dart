@@ -1,28 +1,49 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-
+import 'request_server.dart';
 import 'const.dart';
+import 'add_new_details.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeUniqueScreen extends StatefulWidget {
-  String name,phoneNumber,dateOfJoin,id,job,address;
-  double salary,amountPayable;
+  String username,id;
   bool mutable;
-  EmployeeUniqueScreen(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  EmployeeUniqueScreen(this.username,this.id,this.mutable);
   @override
-  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.username,this.id,this.mutable);
 }
 
 class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
-  String name,phoneNumber,dateOfJoin,id,job,address;
-  double salary,amountPayable;
-  bool mutable;
+  String name="",phoneNumber="",dateOfJoin="",id="",job="",address="";
+  String username="";
+  double salary=0,amountPayable=0;
+  bool mutable=false;
+  String _inputPassword;
 
-  _EmployeeUniqueScreenState(this.name,this.phoneNumber,this.dateOfJoin,this.id,this.job,this.address,this.salary,this.amountPayable,this.mutable);
+  _EmployeeUniqueScreenState(this.username,this.id,this.mutable);
+
+  Future<bool> populateData() async{
+    RequestServer server = RequestServer(action: "select * from Employees where EmpID=$id", Qtype: "R");
+    var items= await server.getDecodedResponse();
+    setState(() {
+      name=items[0]["Name"];
+      phoneNumber=items[0]["PhoneNumber"];
+      job=items[0]["Job"];
+      address=items[0]["Address"];
+      amountPayable=double.parse(items[0]["AmountPayable"]);
+      salary=double.parse(items[0]["Salary"]);
+      dateOfJoin=items[0]["DateOfJoin"];
+    });
+    return true;
+  }
 
   Function getCreditSalaryFunction(){
-    return (){
+    return () async{
+      final _returnedData= await showModalBottomSheet(context: context, builder:(context){
+        return PasswordConfirm();  //Temp testing
+      });
+      _inputPassword=_returnedData;
       setState(() {
         amountPayable=0;
       });
@@ -36,6 +57,13 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
     else{
       return 'Credit Salary: $amountPayable';
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
   }
 
   @override

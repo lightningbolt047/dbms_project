@@ -445,7 +445,7 @@ class _PasswordConfirmState extends State<PasswordConfirm> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Text("Enter your password to confirm: "),
+                      Text("Enter your password to make sure its you: "),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.fromLTRB(1,0,30,0),

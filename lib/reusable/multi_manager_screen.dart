@@ -41,10 +41,10 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       }
     }
     else if(pageType==pageTypeList.procurementManager){
-      RequestServer server=RequestServer(action: "select * from MilkProducer",Qtype: "R");
+      RequestServer server=RequestServer(action: "select ProducerID from MilkProducer",Qtype: "R");
       var items=await server.getDecodedResponse();
       for(int i=0;i<items.length;i++){
-        _cards.add(MilkProducerCard(items[i]["Name"],items[i]["ProducerID"],items[i]["Area"],items[i]["PhoneNumber"],double.parse(items[i]["AmountPayable"]),double.parse(items[i]["Litres"])));
+        _cards.add(MilkProducerCard(username,items[i]["ProducerID"]));
       }
     }
     return _cards;

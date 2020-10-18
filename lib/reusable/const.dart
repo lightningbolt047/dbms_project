@@ -42,6 +42,9 @@ var sizedBoxInColumn = SizedBox(
 );
 
 double milkRate=35;
+double butterRate=60;
+double cheeseRate=65;
+double yogurtRate=40;
 
 class RoundActionButton extends StatelessWidget {
   final Widget child;

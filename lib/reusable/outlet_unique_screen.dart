@@ -1,15 +1,51 @@
 import 'package:dairymanagement/reusable/request_items.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'request_server.dart';
 import 'const.dart';
 import 'package:flutter/material.dart';
 
 class OutletUniqueScreen extends StatefulWidget {
+  String outletID;
+  OutletUniqueScreen(this.outletID);
   @override
-  _OutletUniqueScreenState createState() => _OutletUniqueScreenState();
+  _OutletUniqueScreenState createState() => _OutletUniqueScreenState(this.outletID);
 }
 
 class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
+
+  double _singleSessionIncome=0,totalIncome=0,amountPayable=0;
+  String outletID="",outletName="",phoneNumber="",area="";
+  double availMilk=0,availButter=0,availCheese=0,availYogurt=0;
+
+  double saleMilk=0,saleButter=0,saleCheese=0,saleYogurt=0;
+
+  _OutletUniqueScreenState(this.outletID);
+
+  Future<bool> populateData() async{
+    RequestServer server = RequestServer(action: "select * from Outlets,Available where Outlets.outID=Available.outID and Outlets.outID=$outletID;", Qtype: "R");
+    var items= await server.getDecodedResponse();
+    setState(() {
+      outletName=items[0]["Outlet_name"];
+      phoneNumber=items[0]["PhoneNumber"];
+      area=items[0]["Area"];
+      amountPayable=double.parse(items[0]["AmountPayable"]);
+      availButter=double.parse(items[0]["Butter"]);
+      availCheese=double.parse(items[0]["Cheese"]);
+      availMilk=double.parse(items[0]["Milk"]);
+      availYogurt=double.parse(items[0]["Yogurt"]);
+      totalIncome=double.parse(items[0]["TotalIncome"]);
+    });
+    return true;
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +67,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
             Center(
               child: Column(
                 children: [
-                  Text("121000",
+                  Text("$_singleSessionIncome",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -44,7 +80,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                     child: FlatButton(
                       color: Colors.blueGrey,
                       textColor: Colors.white,
-                      child: Text("Pay Outstanding Amount to Company: 20000",
+                      child: Text("Pay Outstanding Amount to Company: $amountPayable",
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -62,7 +98,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(15.0,0,0,0),
-              child: Text("Currently Available in Store: ChennaiOut, Area",
+              child: Text("Currently Available in Store: $outletName, $area",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.blueGrey
@@ -83,19 +119,19 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15,0,0,1),
-                    child: Text("Milk: 25",style:TextStyle(color: Colors.blueGrey)),
+                    child: Text("Milk: $availMilk",style:TextStyle(color: Colors.blueGrey)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15,0,0,1),
-                    child: Text("Butter: 25",style:TextStyle(color: Colors.blueGrey)),
+                    child: Text("Butter: $availButter",style:TextStyle(color: Colors.blueGrey)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15,0,0,1),
-                    child: Text("Cheese: 25",style:TextStyle(color: Colors.blueGrey)),
+                    child: Text("Cheese: $availCheese",style:TextStyle(color: Colors.blueGrey)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15,0,0,1),
-                    child: Text("Yogurt: 25",style:TextStyle(color: Colors.blueGrey)),
+                    child: Text("Yogurt: $availYogurt",style:TextStyle(color: Colors.blueGrey)),
                   ),
                 ],
               ),
@@ -128,7 +164,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Milk: 20",style: TextStyle(
+                        child: Text("Milk: $saleMilk",style: TextStyle(
                             color: Colors.blueAccent,
                             fontSize: 20
                         ),),
@@ -136,12 +172,22 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                       Padding(
                           padding: EdgeInsets.fromLTRB(2,0,5,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleMilk<availMilk){
+                                saleMilk++;
+                              }
+                            });
                             return;
                           })
                       ),
                       Padding(
                           padding: EdgeInsets.fromLTRB(5,0,10,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleMilk>0){
+                                saleMilk--;
+                              }
+                            });
                             return;
                           })
                       )
@@ -155,7 +201,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Milk: 20",style: TextStyle(
+                        child: Text("Butter: $saleButter",style: TextStyle(
                             color: Colors.blueAccent,
                             fontSize: 20
                         ),),
@@ -163,12 +209,22 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                       Padding(
                           padding: EdgeInsets.fromLTRB(2,0,5,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleButter<availButter){
+                                saleButter++;
+                              }
+                            });
                             return;
                           })
                       ),
                       Padding(
                           padding: EdgeInsets.fromLTRB(5,0,10,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleButter>0){
+                                saleButter--;
+                              }
+                            });
                             return;
                           })
                       )
@@ -182,7 +238,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Milk: 20",style: TextStyle(
+                        child: Text("Cheese: $saleCheese",style: TextStyle(
                             color: Colors.blueAccent,
                             fontSize: 20
                         ),),
@@ -190,12 +246,22 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                       Padding(
                           padding: EdgeInsets.fromLTRB(2,0,5,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleCheese<availCheese){
+                                saleCheese++;
+                              }
+                            });
                             return;
                           })
                       ),
                       Padding(
                           padding: EdgeInsets.fromLTRB(5,0,10,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleCheese>0){
+                                saleCheese--;
+                              }
+                            });
                             return;
                           })
                       )
@@ -209,7 +275,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Milk: 20",style: TextStyle(
+                        child: Text("Yogurt: $saleYogurt",style: TextStyle(
                             color: Colors.blueAccent,
                             fontSize: 20
                         ),),
@@ -217,12 +283,22 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                       Padding(
                           padding: EdgeInsets.fromLTRB(2,0,5,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleYogurt<availYogurt){
+                                saleYogurt++;
+                              }
+                            });
                             return;
                           })
                       ),
                       Padding(
                           padding: EdgeInsets.fromLTRB(5,0,10,5),
                           child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,), action:(){
+                            setState(() {
+                              if(saleYogurt>0){
+                                saleYogurt--;
+                              }
+                            });
                             return;
                           })
                       ),
@@ -243,7 +319,22 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                             ),
                           ),
                           onPressed: (){
-                            //TODO sql queries to sell items
+                            //TODO sql queries to sell items, set saleValues to 0 and add the amount to amountPayable and _singleSessionIncome
+                            setState(() {
+                              amountPayable+=saleMilk*milkRate;
+                              amountPayable+=saleButter*butterRate;
+                              amountPayable+=saleCheese*cheeseRate;
+                              amountPayable+=saleYogurt*yogurtRate;
+
+                              availMilk-=saleMilk;
+                              availButter-=saleButter;
+                              availCheese-=saleCheese;
+                              availYogurt-=saleYogurt;
+
+                              _singleSessionIncome+=(saleMilk*milkRate)+(saleButter*butterRate)+(saleCheese*cheeseRate)+(saleYogurt*yogurtRate);
+
+                              saleMilk=saleButter=saleCheese=saleYogurt=0;
+                            });
                           },
                         ),
                     ),

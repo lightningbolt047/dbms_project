@@ -50,7 +50,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
         ]
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 20, 40, 2),
+                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -85,7 +85,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 5, 40, 2),
+                  padding: const EdgeInsets.fromLTRB(40, 3, 40, 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -120,7 +120,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 5, 40, 2),
+                  padding: const EdgeInsets.fromLTRB(40, 3, 40, 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -155,7 +155,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 5, 40, 2),
+                  padding: const EdgeInsets.fromLTRB(40, 3, 40, 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

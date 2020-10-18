@@ -5,11 +5,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'const.dart';
 
 class RequestItemsSheet extends StatefulWidget {
+  String outletID;
+  RequestItemsSheet(this.outletID);
   @override
-  _RequestItemsSheetState createState() => _RequestItemsSheetState();
+  _RequestItemsSheetState createState() => _RequestItemsSheetState(this.outletID);
 }
 
 class _RequestItemsSheetState extends State<RequestItemsSheet> {
+  String outletID="";
+
+  _RequestItemsSheetState(this.outletID);
 
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
   @override
@@ -37,7 +42,8 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                   ),),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: (){
                       setState(() {
-                        //TODO Execute SQL query to modify values for the outlet (Place request for new stocks)
+                        //TODO Execute SQL query to modify values for the outlet (Place request for new stocks) and close the activity
+                        Navigator.pop(context);
                         return;
                       });
                     },),

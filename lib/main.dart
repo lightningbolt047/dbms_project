@@ -5,6 +5,7 @@ import 'reusable/multi_manager_screen.dart';
 import 'package:dairymanagement/employee_manager.dart';
 import 'reusable/employee_unique_screen.dart';  //tis for check
 import 'reusable/const.dart'; //tis for check
+import 'reusable/outlet_unique_screen.dart';
 
 void main() {
   runApp(Login());
@@ -84,7 +85,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
+                            MaterialPageRoute(builder: (context) => OutletUniqueScreen()
                             )
                         );
                       }

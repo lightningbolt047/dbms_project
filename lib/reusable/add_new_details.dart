@@ -124,7 +124,7 @@ class _AddDetailsState extends State<AddDetails> {
                         child: TextField(
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                            labelText: "Date of Join",
+                            labelText: "YYYY-MM-DD",
                           ),
                           onChanged: (string){
                             _dateOfJoin=string;

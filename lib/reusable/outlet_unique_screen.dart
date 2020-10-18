@@ -48,6 +48,11 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(outletName==""){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(

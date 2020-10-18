@@ -26,6 +26,14 @@ collection
 2.10
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0-nullsafety.3/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0-nullsafety.3/lib/
+convert
+1.17
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1/lib/
+crypto
+2.3
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5/lib/
 cupertino_icons
 2.0
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.3/

@@ -13,20 +13,13 @@ class AddDetails extends StatefulWidget {
 
 class _AddDetailsState extends State<AddDetails> {
   final pageType;
-  String _empID,_empName,_phoneNumber,_job,_dateOfJoin,_address;
-  double _salary,_amountPayable=0;
-
-  String _outletName,_outletPhoneNumber,_area,_outletID;
-  double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
-
-  String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword;
-
-  String _producerName,_producerID,_producerPhoneNumber,_producerArea;
 
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
     if(pageType==pageTypeList.employeeManager){
+      String _empID,_empName,_phoneNumber,_job,_dateOfJoin,_address;
+      double _salary,_amountPayable=0;
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -174,6 +167,8 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.outletManager){
+      String _outletName,_outletPhoneNumber,_area,_outletID;
+      double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -385,6 +380,7 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.admin){
+      String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword;
       return Padding(
         padding: EdgeInsets.all(8),
         child: Column(
@@ -497,6 +493,7 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.procurementManager){
+      String _producerName,_producerID,_producerPhoneNumber,_producerArea;
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -597,6 +594,117 @@ class _AddDetailsState extends State<AddDetails> {
         ),
       );
     }
+    if(pageType==pageTypeList.transport){
+      String _truckID,_truckArea,_truckNumberPlate,_truckEmpID;
+      return Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          children: [
+            Card(
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text("TruckID: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,30,0),
+                              //width: 200,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Enter TruckID",
+                                ),
+                                onChanged: (string){
+                                  _truckID=string;
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("EmployeeID: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,30,0),
+                              //width: 200,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Employee ID",
+                                ),
+                                onChanged: (string){
+                                  _truckEmpID=string;
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("NumberPlate: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,2,0),
+                              width: 200,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Vehicle Number Plate",
+                                ),
+                                onChanged: (string){
+                                  _truckNumberPlate=string;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text("Area: "),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(1,0,30,0),
+                                    //width: 200,
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        labelText: "Area (lower case)",
+                                      ),
+                                      onChanged: (string){
+                                        _truckArea=string;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                                    //TODO perform sql actions here and close the screen
+                                    if(_truckID==null || _truckArea==null || _truckNumberPlate==null || _truckEmpID==null){
+                                      print("Invalid/Missing details! Exiting gracefully");
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  ),
+
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   String getAppBarText(){
@@ -612,7 +720,10 @@ class _AddDetailsState extends State<AddDetails> {
     if(pageType==pageTypeList.admin){
       return "Create new User Account";
     }
-    return "Non Null AppBar name";
+    if(pageType==pageTypeList.transport){
+      return "Assign Driver to Truck";
+    }
+    return "Non Null AppBar name to keep from crashing😂";
   }
 
   @override

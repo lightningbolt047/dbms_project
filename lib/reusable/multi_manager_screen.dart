@@ -79,6 +79,13 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
         });
       };
     }
+    if(pageType==pageTypeList.transport){
+      return (){
+        showModalBottomSheet(context: context, builder:(context){
+          return AddDetails(pageTypeList.transport);  //Temp testing
+        });
+      };
+    }
     return (){};
   }
 

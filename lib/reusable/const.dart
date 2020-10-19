@@ -6,6 +6,7 @@ enum pageTypeList{
   outletManager,
   employeeManager,
   procurementManager,
+  admin
 }
 
 enum userEvalStatusTypes{

@@ -19,6 +19,8 @@ class _AddDetailsState extends State<AddDetails> {
   String _outletName,_outletPhoneNumber,_area,_outletID;
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
 
+  String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword;
+
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
@@ -389,6 +391,108 @@ class _AddDetailsState extends State<AddDetails> {
         ),
       );
     }
+    if(pageType==pageTypeList.admin){
+      return Padding(
+        padding: EdgeInsets.all(8),
+        child: Card(
+          elevation: 3,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Username: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "New Username",
+                          ),
+                          onChanged: (string){
+                            _inputUsername=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    Text("New Password: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Enter new Password",
+                          ),
+                          onChanged: (string){
+                            _inputNewPassword=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    Text("Repeat Password: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,2,0),
+                        width: 200,
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Repeat Password",
+                          ),
+                          onChanged: (string){
+                            _inputRepeatPassword=string;
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text("ID (Employee or OutletID): "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,30,0),
+                              //width: 200,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Leave blank if Not Applicable",
+                                ),
+                                onChanged: (string){
+                                  _inputID=string;
+                                },
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                              //TODO perform sql actions here and close the screen
+                              Navigator.pop(context);
+                            },
+                            ),
+
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   String getAppBarText(){
@@ -397,6 +501,9 @@ class _AddDetailsState extends State<AddDetails> {
     }
     if(pageType==pageTypeList.outletManager){
       return "Add new Outlet";
+    }
+    if(pageType==pageTypeList.admin){
+      return "Create new User Account";
     }
     return "Non Null AppBar name";
   }

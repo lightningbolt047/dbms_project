@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OutletUniqueScreen("013")
+                            MaterialPageRoute(builder: (context) => AdminPage()
                             )
                         );
                       }

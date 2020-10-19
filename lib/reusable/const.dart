@@ -6,8 +6,12 @@ enum pageTypeList{
   outletManager,
   employeeManager,
   procurementManager,
-  admin
+  employee,
+  admin,
+  transport
 }
+
+List dates=["2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14","2020-10-15","2020-10-16"];
 
 enum userEvalStatusTypes{
   firstAttempt,

@@ -13,13 +13,15 @@ class AddDetails extends StatefulWidget {
 
 class _AddDetailsState extends State<AddDetails> {
   final pageType;
-  String _empID,_firstName,_lastName,_phoneNumber,_job,_dateOfJoin,_address;
+  String _empID,_empName,_phoneNumber,_job,_dateOfJoin,_address;
   double _salary,_amountPayable=0;
 
   String _outletName,_outletPhoneNumber,_area,_outletID;
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
 
   String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword;
+
+  String _producerName,_producerID,_producerPhoneNumber,_producerArea;
 
   _AddDetailsState(this.pageType);
 
@@ -35,32 +37,17 @@ class _AddDetailsState extends State<AddDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text("First Name: "),
+                    Text("Name: "),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: "Employee's First Name",
+                            labelText: "Employee's Name",
                           ),
                           onChanged: (string){
-                            _firstName=string;
-                          },
-                        ),
-                      ),
-                    ),
-                    Text("Last Name: "),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(1,0,30,0),
-                        //width: 200,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Employee's First Name",
-                          ),
-                          onChanged: (string){
-                            _lastName=string;
+                            _empName=string;
                           },
                         ),
                       ),
@@ -167,12 +154,15 @@ class _AddDetailsState extends State<AddDetails> {
                             labelText: "Initial Salary",
                           ),
                           onChanged: (string){
-                            _salary=double.parse(string);
+                            _salary=double.tryParse(string);
                           },
                         ),
                       ),
                     ),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                      if(_empID==null || _empName==null || _phoneNumber==null || _job==null || _dateOfJoin==null || _address==null || _salary==null){
+                        print("One or more details missing/invalid. Exiting gracefully!");
+                      }
                       Navigator.pop(context);
                     },),
                   ],
@@ -381,6 +371,9 @@ class _AddDetailsState extends State<AddDetails> {
                     ),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
                       //TODO perform sql actions here
+                      if(_area==null || _outletID==null || _outletPhoneNumber==null){
+                        print("One or more details are missing/invalid. Gracefully exiting");
+                      }
                       Navigator.pop(context);
                     },),
                   ],
@@ -394,6 +387,118 @@ class _AddDetailsState extends State<AddDetails> {
     if(pageType==pageTypeList.admin){
       return Padding(
         padding: EdgeInsets.all(8),
+        child: Column(
+          children: [
+            Card(
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text("Username: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,30,0),
+                              //width: 200,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  labelText: "New Username",
+                                ),
+                                onChanged: (string){
+                                  _inputUsername=string;
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("New Password: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,30,0),
+                              //width: 200,
+                              child: TextField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: "Enter new Password",
+                                ),
+                                onChanged: (string){
+                                  _inputNewPassword=string;
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("Repeat Password: "),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(1,0,2,0),
+                              width: 200,
+                              child: TextField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: "Repeat Password",
+                                ),
+                                onChanged: (string){
+                                  _inputRepeatPassword=string;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Text("ID (Employee or OutletID): "),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(1,0,30,0),
+                                    //width: 200,
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        labelText: "Leave blank if Not Applicable",
+                                      ),
+                                      onChanged: (string){
+                                        _inputID=string;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                                    //TODO perform sql actions here and close the screen
+                                    if(_inputUsername==null || _inputNewPassword==null || _inputRepeatPassword==null){
+                                      print("Invalid/Missing details! Exiting gracefully");
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  ),
+
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    if(pageType==pageTypeList.procurementManager){
+      return Padding(
+        padding: EdgeInsets.all(8),
         child: Card(
           elevation: 3,
           child: ListView(
@@ -402,49 +507,33 @@ class _AddDetailsState extends State<AddDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text("Username: "),
+                    Text("Name: "),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: "New Username",
+                            labelText: "MilkProducer's Name",
                           ),
                           onChanged: (string){
-                            _inputUsername=string;
+                            _producerName=string;
                           },
                         ),
                       ),
                     ),
-                    Text("New Password: "),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(1,0,30,0),
-                        //width: 200,
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Enter new Password",
-                          ),
-                          onChanged: (string){
-                            _inputNewPassword=string;
-                          },
-                        ),
-                      ),
-                    ),
-                    Text("Repeat Password: "),
+                    Text("Phone Number: "),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.fromLTRB(1,0,2,0),
                         width: 200,
                         child: TextField(
-                          obscureText: true,
+                          keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            labelText: "Repeat Password",
+                            labelText: "MilkProducer's Phone Number",
                           ),
                           onChanged: (string){
-                            _inputRepeatPassword=string;
+                            _producerPhoneNumber=string;
                           },
                         ),
                       ),
@@ -456,35 +545,50 @@ class _AddDetailsState extends State<AddDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    Text("ID: "),
                     Expanded(
-                      child: Row(
-                        children: [
-                          Text("ID (Employee or OutletID): "),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(1,0,30,0),
-                              //width: 200,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  labelText: "Leave blank if Not Applicable",
-                                ),
-                                onChanged: (string){
-                                  _inputID=string;
-                                },
-                              ),
-                            ),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Producer's new ID",
                           ),
-                          Expanded(
-                            child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
-                              //TODO perform sql actions here and close the screen
-                              Navigator.pop(context);
-                            },
-                            ),
-
-                          )
-                        ],
+                          onChanged: (string){
+                            _producerID=string;
+                          },
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Area: "),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(1,0,30,0),
+                        //width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Producer's Area (lower case)",
+                          ),
+                          onChanged: (string){
+                            _producerArea=string;
+                          },
+                        ),
+                      ),
+                    ),
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                      if(_producerID==null || _producerArea==null || _producerPhoneNumber==null || _producerName==null){
+                        print("One or more details missing/invalid. Exiting gracefully!");
+                      }
+                      //TODO Amount and AmountPayable is 0 by default. So no need to declare new variable for it and waste memoru
+                      Navigator.pop(context);
+                    },),
                   ],
                 ),
               ),
@@ -501,6 +605,9 @@ class _AddDetailsState extends State<AddDetails> {
     }
     if(pageType==pageTypeList.outletManager){
       return "Add new Outlet";
+    }
+    if(pageType==pageTypeList.procurementManager){
+      return "Add new Milk Producer";
     }
     if(pageType==pageTypeList.admin){
       return "Create new User Account";

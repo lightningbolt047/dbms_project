@@ -27,24 +27,38 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     else if(pageType==pageTypeList.procurementManager){
       return "Milk Producers";
     }
+    else if(pageType==pageTypeList.transport){
+      return "Transport";
+    }
     return "No text available";
   }
 
-  Future<List<Widget>> getCards() async{
-    List<Widget> _cards=[];
-    if(pageType==pageTypeList.outletManager){
-      RequestServer server= RequestServer(action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID;",Qtype: "R");
-      var items=await server.getDecodedResponse();
-      for(int i=0;i<items.length;i++){
+  Future<List<Widget>> getCards() async {
+    List<Widget> _cards = [];
+    if (pageType == pageTypeList.outletManager) {
+      RequestServer server = RequestServer(
+          action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID;",
+          Qtype: "R");
+      var items = await server.getDecodedResponse();
+      for (int i = 0; i < items.length; i++) {
         print(items[i]["outID"]);
-        _cards.add(OutletCard(username,items[i]["outID"]));
+        _cards.add(OutletCard(username, items[i]["outID"]));
       }
     }
-    else if(pageType==pageTypeList.procurementManager){
-      RequestServer server=RequestServer(action: "select ProducerID from MilkProducer",Qtype: "R");
-      var items=await server.getDecodedResponse();
-      for(int i=0;i<items.length;i++){
-        _cards.add(MilkProducerCard(username,items[i]["ProducerID"]));
+    else if (pageType == pageTypeList.procurementManager) {
+      RequestServer server = RequestServer(
+          action: "select ProducerID from MilkProducer", Qtype: "R");
+      var items = await server.getDecodedResponse();
+      for (int i = 0; i < items.length; i++) {
+        _cards.add(MilkProducerCard(username, items[i]["ProducerID"]));
+      }
+    }
+    else if (pageType == pageTypeList.transport) {
+      RequestServer server = RequestServer(
+          action: "select TruckID from Transport", Qtype: "R");
+      var items = await server.getDecodedResponse();
+      for (int i = 0; i < items.length; i++) {
+        _cards.add(Transport(items[i]["TruckID"]));
       }
     }
     return _cards;
@@ -60,9 +74,12 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     }
     if(pageType==pageTypeList.procurementManager){
       return (){
-        print("Not yet defined");
+        showModalBottomSheet(context: context, builder:(context){
+          return AddDetails(pageTypeList.procurementManager);  //Temp testing
+        });
       };
     }
+    return (){};
   }
 
 

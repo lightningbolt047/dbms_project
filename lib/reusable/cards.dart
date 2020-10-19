@@ -179,7 +179,7 @@ class EmployeeCard extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return EmployeeUniqueScreen(username,id,true);
+          return EmployeeUniqueScreen(username,id,pageTypeList.employeeManager);
         }));
       },
       child: Padding(
@@ -385,3 +385,87 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
     );
   }
 }
+
+class Transport extends StatefulWidget {
+  final String truckID;
+  Transport(this.truckID);
+  @override
+  _TransportState createState() => _TransportState(this.truckID);
+}
+
+class _TransportState extends State<Transport> {
+  String truckID="",area="";
+  String numberPlate="",empID="";
+  _TransportState(this.truckID);
+
+
+  Future<bool> populateData() async{
+    RequestServer server = RequestServer(action: "select Transport.TruckID,NumberPlate,EmpID,Area from Truck,Transport where Transport.TruckID=$truckID and Transport.TruckID=Truck.TruckID;", Qtype: "R");
+    var items= await server.getDecodedResponse();
+    setState(() {
+      numberPlate=items[0]["NumberPlate"];
+      empID=items[0]["EmpID"];
+      area=items[0]["Area"];
+    });
+    return true;
+  }
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    populateData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if(numberPlate==""){
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "$truckID, $area",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                sizedBoxInColumn,
+                Row(
+                  children: [
+                    Icon(
+                        FontAwesomeIcons.car
+                    ),
+                    sizedBoxSmallInRow,
+                    Text(
+                      numberPlate,
+                    ),
+                    sizedBoxLargeInRow,
+                    idIcon,
+                    sizedBoxSmallInRow,
+                    Text(empID),
+                  ],
+                ),
+              ],
+            ),
+          )
+      ),
+    );
+  }
+}
+

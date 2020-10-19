@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
                     //       if(usertype=="employee"){
                     //         Navigator.push(
                     //                     context,
-                    //                     MaterialPageRoute(builder: (context) => EmployeeUniqueScreen(_inputUsername,ID,false)
+                    //                     MaterialPageRoute(builder: (context) => EmployeeUniqueScreen(_inputUsername,ID,pageTypeList.employee)
                     //                     )
                     //                 );
                     //       }
@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AdminPage()
+                            MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.procurementManager,_inputUsername)
                             )
                         );
                       }

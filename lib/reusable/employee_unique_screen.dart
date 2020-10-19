@@ -8,20 +8,20 @@ import 'package:flutter/material.dart';
 
 class EmployeeUniqueScreen extends StatefulWidget {
   String username,id;
-  bool mutable;
-  EmployeeUniqueScreen(this.username,this.id,this.mutable);
+  var pageType;
+  EmployeeUniqueScreen(this.username,this.id,this.pageType);
   @override
-  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.username,this.id,this.mutable);
+  _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.username,this.id,this.pageType);
 }
 
 class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
   String name="",phoneNumber="",dateOfJoin="",id="",job="",address="";
   String username="";
   double salary=0,amountPayable=0;
-  bool mutable=false;
+  var pageType;
   String _inputPassword;
 
-  _EmployeeUniqueScreenState(this.username,this.id,this.mutable);
+  _EmployeeUniqueScreenState(this.username,this.id,this.pageType);
 
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select * from Employees where EmpID=$id", Qtype: "R");
@@ -254,7 +254,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                       fontSize: 20,
                                     ),
                                     ),
-                                    onPressed: (mutable && amountPayable>0)?getCreditSalaryFunction():null ,
+                                    onPressed: (pageType==pageTypeList.employeeManager && amountPayable>0)?getCreditSalaryFunction():null ,
                                   ),
                                 ),
                                 Padding(

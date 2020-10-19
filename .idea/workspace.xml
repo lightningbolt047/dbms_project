@@ -10,10 +10,14 @@
       <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/preferences" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/preferences" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill" beforeDir="false" afterPath="$PROJECT_DIR$/build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/adminPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/adminPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/reusable/add_new_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/add_new_details.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/reusable/cards.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/cards.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/reusable/const.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/const.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/reusable/employee_unique_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/employee_unique_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/reusable/multi_manager_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/multi_manager_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/reusable/request_server.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/reusable/request_server.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,25 +126,25 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="498" y="234" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1601294015819" />
-    <state width="1236" height="170" key="GridCell.Tab.0.bottom" timestamp="1603094792475">
+    <state width="1236" height="203" key="GridCell.Tab.0.bottom" timestamp="1603109367642">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="170" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603094792475" />
+    <state width="1236" height="203" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603109367642" />
     <state width="1323" height="177" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="170" key="GridCell.Tab.0.center" timestamp="1603094792475">
+    <state width="1236" height="203" key="GridCell.Tab.0.center" timestamp="1603109367641">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="170" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603094792475" />
+    <state width="1236" height="203" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603109367641" />
     <state width="1323" height="177" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="170" key="GridCell.Tab.0.left" timestamp="1603094792475">
+    <state width="1236" height="203" key="GridCell.Tab.0.left" timestamp="1603109367641">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="170" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603094792475" />
+    <state width="1236" height="203" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603109367641" />
     <state width="1323" height="177" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="170" key="GridCell.Tab.0.right" timestamp="1603094792475">
+    <state width="1236" height="203" key="GridCell.Tab.0.right" timestamp="1603109367641">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="170" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603094792475" />
+    <state width="1236" height="203" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603109367641" />
     <state width="1323" height="177" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
     <state x="172" y="0" key="SettingsEditor" timestamp="1602945734450">
       <screen x="0" y="0" width="1280" height="680" />

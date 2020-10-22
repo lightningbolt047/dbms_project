@@ -71,3 +71,23 @@ class RoundActionButton extends StatelessWidget {
   }
 }
 
+class CustomRoundActionButton extends StatelessWidget {
+  final Widget child;
+  final Function action;
+  final Color color;
+  CustomRoundActionButton({@required this.child,this.color, this.action});
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: child,
+      shape: CircleBorder(),
+      onPressed: action,
+      fillColor: color,
+      elevation: 5,
+      constraints: BoxConstraints.tightFor(
+        height:35.0,
+        width: 35.0,
+      ),
+    );
+  }
+}

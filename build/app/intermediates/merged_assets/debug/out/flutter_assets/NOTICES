@@ -1112,6 +1112,8 @@ POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------------
 async
 collection
+convert
+crypto
 stream_channel
 typed_data
 

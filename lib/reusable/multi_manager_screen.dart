@@ -27,7 +27,7 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     else if(pageType==pageTypeList.procurementManager){
       return "Milk Producers";
     }
-    else if(pageType==pageTypeList.transport){
+    else if(pageType==pageTypeList.transportManager){
       return "Transport";
     }
     return "No text available";
@@ -53,7 +53,7 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
         _cards.add(MilkProducerCard(username, items[i]["ProducerID"]));
       }
     }
-    else if (pageType == pageTypeList.transport) {
+    else if (pageType == pageTypeList.transportManager) {
       RequestServer server = RequestServer(
           action: "select TruckID from Transport", Qtype: "R");
       var items = await server.getDecodedResponse();
@@ -79,10 +79,10 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
         });
       };
     }
-    if(pageType==pageTypeList.transport){
+    if(pageType==pageTypeList.transportManager){
       return (){
         showModalBottomSheet(context: context, builder:(context){
-          return AddDetails(pageTypeList.transport);  //Temp testing
+          return AddDetails(pageTypeList.transportManager);  //Temp testing
         });
       };
     }

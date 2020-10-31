@@ -1,4 +1,5 @@
 import 'package:dairymanagement/adminPage.dart';
+import 'package:dairymanagement/finance_manager.dart';
 import 'package:dairymanagement/reusable/request_server.dart';
 import 'package:flutter/material.dart';
 import 'reusable/LogInButton.dart';
@@ -150,7 +151,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OutletUniqueScreen("012")
+                            MaterialPageRoute(builder: (context) => FinanceManagerScreen()
                             )
                         );
                       }

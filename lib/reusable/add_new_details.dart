@@ -594,7 +594,7 @@ class _AddDetailsState extends State<AddDetails> {
         ),
       );
     }
-    if(pageType==pageTypeList.transport){
+    if(pageType==pageTypeList.transportManager){
       String _truckID,_truckArea,_truckNumberPlate,_truckEmpID;
       return Padding(
         padding: EdgeInsets.all(8),
@@ -720,7 +720,7 @@ class _AddDetailsState extends State<AddDetails> {
     if(pageType==pageTypeList.admin){
       return "Create new User Account";
     }
-    if(pageType==pageTypeList.transport){
+    if(pageType==pageTypeList.transportManager){
       return "Assign Driver to Truck";
     }
     return "Non Null AppBar name to keep from crashing😂";

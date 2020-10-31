@@ -27,12 +27,13 @@ class RequestServer{
     this.Qtype="R";
     var response= await getDecodedResponse();
 
+    String passwordHash=getHashedPassword(password);
     var bytes=utf8.encode(password);
     var digest=md5.convert(bytes);
     if(response=="Empty"){
       return false;
     }
-    if(response[0]["username"]==username && response[0]["password_hash"]){
+    if(response[0]["username"]==username && response[0]["password_hash"]==passwordHash){
       return true;
     }
     else{

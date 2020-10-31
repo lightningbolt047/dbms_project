@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 String url="http://localhost:80/index.php";
 
@@ -90,4 +92,10 @@ class CustomRoundActionButton extends StatelessWidget {
       ),
     );
   }
+}
+
+String getHashedPassword(String password){
+  var bytes=utf8.encode(password);
+  var digest=md5.convert(bytes);
+  return digest.toString();
 }

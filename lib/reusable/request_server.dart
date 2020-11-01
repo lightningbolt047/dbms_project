@@ -14,7 +14,7 @@ class RequestServer{
     http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
     if(response.statusCode==200){
       print("Connection to server success! Response code is OK 👍");
-      //print("This is the json output: ${response.body}");
+      //print("This is the response body: ${response.body}");
       return jsonDecode(response.body);
     }
     else{
@@ -28,12 +28,12 @@ class RequestServer{
     var response= await getDecodedResponse();
 
     String passwordHash=getHashedPassword(password);
-    var bytes=utf8.encode(password);
-    var digest=md5.convert(bytes);
+    // var bytes=utf8.encode(password);
+    // var digest=md5.convert(bytes);
     if(response=="Empty"){
       return false;
     }
-    if(response[0]["username"]==username && response[0]["password_hash"]==passwordHash){
+    if(response[0]["username"]==username && response[0]["password_hash"].toString().toLowerCase().compareTo(passwordHash)==0){
       return true;
     }
     else{

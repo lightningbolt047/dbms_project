@@ -1,6 +1,7 @@
 import 'package:dairymanagement/reusable/const.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dairymanagement/reusable/request_server.dart';
 
 
 class AddDetails extends StatefulWidget {
@@ -12,6 +13,9 @@ class AddDetails extends StatefulWidget {
 }
 
 class _AddDetailsState extends State<AddDetails> {
+  String _errorText="default";
+  Color _errorTextColor;
+  bool _errorTextVisible=false;
   final pageType;
 
   _AddDetailsState(this.pageType);
@@ -380,7 +384,11 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.admin){
-      String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword;
+      String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword,_inputUserType;
+      final List<TextEditingController> _controllers=[];
+      for(int i=0;i<5;i++){
+        _controllers.add(TextEditingController());
+      }
       return Padding(
         padding: EdgeInsets.all(8),
         child: Column(
@@ -401,6 +409,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,30,0),
                               //width: 200,
                               child: TextField(
+                                controller: _controllers[0],
                                 decoration: InputDecoration(
                                   labelText: "New Username",
                                 ),
@@ -416,6 +425,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,30,0),
                               //width: 200,
                               child: TextField(
+                                controller: _controllers[1],
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   labelText: "Enter new Password",
@@ -432,6 +442,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,2,0),
                               width: 200,
                               child: TextField(
+                                controller: _controllers[2],
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   labelText: "Repeat Password",
@@ -452,12 +463,29 @@ class _AddDetailsState extends State<AddDetails> {
                           Expanded(
                             child: Row(
                               children: [
+                                Text("User Type: "),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(1,0,30,0),
+                                    //width: 200,
+                                    child: TextField(
+                                      controller: _controllers[3],
+                                      decoration: InputDecoration(
+                                        labelText: "Account Type",
+                                      ),
+                                      onChanged: (string){
+                                        _inputUserType=string;
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 Text("ID (Employee or OutletID): "),
                                 Expanded(
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(1,0,30,0),
                                     //width: 200,
                                     child: TextField(
+                                      controller: _controllers[4],
                                       decoration: InputDecoration(
                                         labelText: "Leave blank if Not Applicable",
                                       ),
@@ -468,12 +496,71 @@ class _AddDetailsState extends State<AddDetails> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
                                     //TODO perform sql actions here and close the screen
-                                    if(_inputUsername==null || _inputNewPassword==null || _inputRepeatPassword==null){
-                                      print("Invalid/Missing details! Exiting gracefully");
+                                    if(_inputUsername==null || _inputNewPassword==null || _inputRepeatPassword==null || _inputUserType==null){
+                                      setState(() {
+                                        _errorText="Invalid/Missing details!";
+                                        _errorTextColor=Colors.red;
+                                        _errorTextVisible=true;
+                                        for(int i=0;i<5;i++){
+                                          _controllers[i].clear();
+                                        }
+                                      });
+                                      print("u:$_inputUsername,np:$_inputNewPassword,rp:$_inputRepeatPassword,ut:$_inputUserType");
+                                      return;
                                     }
-                                    Navigator.pop(context);
+                                    else if(_inputNewPassword.compareTo(_inputRepeatPassword)!=0){
+                                      setState(() {
+                                        _errorText="Password fields do not match";
+                                        _errorTextColor=Colors.red;
+                                        _errorTextVisible=true;
+                                        for(int i=0;i<5;i++){
+                                          _controllers[i].clear();
+                                        }
+                                      });
+                                      return;
+                                    }
+                                    if(_inputID==null){
+                                      _inputID="";
+                                    }
+                                    RequestServer server = RequestServer(action: "select * from UserTable where username=\"$_inputUsername\"", Qtype: "R");
+                                    var items= await server.getDecodedResponse();
+                                    if(items.toString().compareTo("Empty")==0){
+                                      RequestServer serverInsert=RequestServer(action: "insert into UserTable values(\"$_inputUsername\",\"${getHashedPassword(_inputRepeatPassword)}\",\"${_inputUserType.toLowerCase()}\",\"$_inputID\")",Qtype: "W");
+                                      var result=await serverInsert.getDecodedResponse();
+                                      if(result.toString().compareTo("OK")==0){
+                                        setState(() {
+                                          _errorText="User Account Created Successfully";
+                                          _errorTextColor=Colors.green;
+                                          _errorTextVisible=true;
+                                          for(int i=0;i<5;i++){
+                                            _controllers[i].clear();
+                                          }
+                                        });
+                                      }
+                                      else{
+                                        setState(() {
+                                          _errorText="Something went wrong";
+                                          _errorTextColor=Colors.red;
+                                          _errorTextVisible=true;
+                                          for(int i=0;i<5;i++){
+                                            _controllers[i].clear();
+                                          }
+                                        });
+                                      }
+                                    }
+                                    else{
+                                      setState(() {
+                                        _errorText="User already exists";
+                                        _errorTextColor=Colors.red;
+                                        _errorTextVisible=true;
+                                        for(int i=0;i<5;i++){
+                                          _controllers[i].clear();
+                                        }
+                                      });
+                                    }
+                                    //Navigator.pop(context);
                                   },
                                   ),
 
@@ -484,6 +571,15 @@ class _AddDetailsState extends State<AddDetails> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Visibility(
+                        child: Text(_errorText,style: TextStyle(
+                          color: _errorTextColor
+                        ),),
+                        visible: _errorTextVisible,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -735,7 +831,7 @@ class _AddDetailsState extends State<AddDetails> {
             getAppBarText()
           ),
         ),
-        body: getBodyContent(), //This container is temp, widget get from function
+        body: getBodyContent(),
       ),
     );
   }

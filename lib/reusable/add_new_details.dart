@@ -18,6 +18,14 @@ class _AddDetailsState extends State<AddDetails> {
   bool _errorTextVisible=false;
   final pageType;
 
+  final List<TextEditingController> _controllers=[];
+
+  double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
+
+  String _outletName,_outletPhoneNumber,_area,_outletID;
+
+  String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword,_inputUserType;
+
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
@@ -171,8 +179,9 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.outletManager){
-      String _outletName,_outletPhoneNumber,_area,_outletID;
-      double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
+      for(int i=0;i<4;i++){
+        _controllers.add(TextEditingController());
+      }
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -189,6 +198,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[0],
                           decoration: InputDecoration(
                             labelText: "Enter Outlet Name",
                           ),
@@ -204,6 +214,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[1],
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             labelText: "Outlet Phone Number",
@@ -220,7 +231,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,2,0),
                         width: 200,
                         child: TextField(
-                          keyboardType: TextInputType.phone,
+                          controller: _controllers[2],
                           decoration: InputDecoration(
                             labelText: "Outlet ID",
                           ),
@@ -247,6 +258,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqMilk<=5000){
                                   _reqMilk+=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -257,6 +272,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqMilk>0){
                                   _reqMilk-=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -274,6 +293,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqButter<=5000){
                                   _reqButter+=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -284,6 +307,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqButter>0){
                                   _reqButter-=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -301,6 +328,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqCheese<=5000){
                                   _reqCheese+=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -311,6 +342,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqCheese>0){
                                   _reqCheese-=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -328,6 +363,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqYogurt<=5000){
                                   _reqYogurt+=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -338,6 +377,10 @@ class _AddDetailsState extends State<AddDetails> {
                               setState(() {
                                 if(_reqYogurt>0){
                                   _reqYogurt-=10;
+                                  _outletName=_controllers[0].text;
+                                  _outletPhoneNumber=_controllers[1].text;
+                                  _outletID=_controllers[2].text;
+                                  _area=_controllers[3].text;
                                 }
                               });
                             }),
@@ -359,6 +402,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[3],
                           decoration: InputDecoration(
                             labelText: "Outlet Location",
                           ),
@@ -368,24 +412,88 @@ class _AddDetailsState extends State<AddDetails> {
                         ),
                       ),
                     ),
-                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
                       //TODO perform sql actions here
                       if(_area==null || _outletID==null || _outletPhoneNumber==null){
-                        print("One or more details are missing/invalid. Gracefully exiting");
+                        setState(() {
+                            _errorText="Invalid/Missing details!";
+                            _errorTextColor=Colors.red;
+                            _errorTextVisible=true;
+                            _outletName=_controllers[0].text;
+                            _outletPhoneNumber=_controllers[1].text;
+                            _outletID=_controllers[2].text;
+                            _area=_controllers[3].text;
+                        });
+                        return;
                       }
-                      Navigator.pop(context);
+                      RequestServer server = RequestServer(action: "select outID from Outlets where outID=\"$_outletID\"", Qtype: "R");
+                      var items= await server.getDecodedResponse();
+                      if(items.toString().compareTo("Empty")==0){
+                        RequestServer serverInsert=RequestServer(action: "insert into Outlets values(\"$_outletID\",\"$_outletName\",\"$_outletPhoneNumber\",0,0,\"${_area.toLowerCase()}\")",Qtype: "W");
+                        var result=await serverInsert.getDecodedResponse();
+                        serverInsert.setAction("insert into Required values(\"$_outletID\",0,0,0,0)");
+                        serverInsert.setQtype("W");
+                        var result1=await serverInsert.getDecodedResponse();
+                        serverInsert.setAction("insert into Available values(\"$_outletID\",$_reqMilk,$_reqYogurt,$_reqCheese,$_reqButter)");
+                        serverInsert.setQtype("W");
+                        var result2=await serverInsert.getDecodedResponse();
+                        if(result.toString().compareTo("OK")==0 && result1.toString().compareTo("OK")==0 && result2.toString().compareTo("OK")==0){
+                          setState(() {
+                            _errorText="New Outlet Added Successfully";
+                            _errorTextColor=Colors.green;
+                            _errorTextVisible=true;
+                            for(int i=0;i<4;i++){
+                              _controllers[i].clear();
+                            }
+                            Navigator.pop(context);
+                          });
+                        }
+                        else{
+                          setState(() {
+                            _errorText="Something went wrong";
+                            _errorTextColor=Colors.red;
+                            _errorTextVisible=true;
+                            
+                            _outletName=_controllers[0].text;
+                            _outletPhoneNumber=_controllers[1].text;
+                            _outletID=_controllers[2].text;
+                            _area=_controllers[3].text;
+                          });
+                        }
+                      }
+                      else{
+                        setState(() {
+                          _errorText="Outlet already exists";
+                          _errorTextColor=Colors.red;
+                          _errorTextVisible=true;
+
+                          _outletName=_controllers[0].text;
+                          _outletPhoneNumber=_controllers[1].text;
+                          _outletID=_controllers[2].text;
+                          _area=_controllers[3].text;
+                        });
+                      }
+
+                      //Navigator.pop(context);
                     },),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Visibility(
+                  child: Text(_errorText,style: TextStyle(
+                      color: _errorTextColor
+                  ),),
+                  visible: _errorTextVisible,
+                ),
+              )
             ],
           ),
         ),
       );
     }
     if(pageType==pageTypeList.admin){
-      String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword,_inputUserType;
-      final List<TextEditingController> _controllers=[];
       for(int i=0;i<5;i++){
         _controllers.add(TextEditingController());
       }
@@ -498,16 +606,18 @@ class _AddDetailsState extends State<AddDetails> {
                                 Expanded(
                                   child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
                                     //TODO perform sql actions here and close the screen
-                                    if(_inputUsername==null || _inputNewPassword==null || _inputRepeatPassword==null || _inputUserType==null){
+                                    if(_inputUsername==null ||_inputUsername=="" || _inputNewPassword==null || _inputNewPassword=="" || _inputRepeatPassword==null || _inputUserType==null || _inputUserType==""){
                                       setState(() {
                                         _errorText="Invalid/Missing details!";
                                         _errorTextColor=Colors.red;
                                         _errorTextVisible=true;
-                                        for(int i=0;i<5;i++){
-                                          _controllers[i].clear();
-                                        }
+
+                                        _inputUsername=_controllers[0].text;
+                                        _inputNewPassword=_controllers[1].text;
+                                        _inputRepeatPassword=_controllers[2].text;
+                                        _inputUserType=_controllers[3].text;
+                                        _inputID=_controllers[4].text;
                                       });
-                                      print("u:$_inputUsername,np:$_inputNewPassword,rp:$_inputRepeatPassword,ut:$_inputUserType");
                                       return;
                                     }
                                     else if(_inputNewPassword.compareTo(_inputRepeatPassword)!=0){
@@ -515,9 +625,12 @@ class _AddDetailsState extends State<AddDetails> {
                                         _errorText="Password fields do not match";
                                         _errorTextColor=Colors.red;
                                         _errorTextVisible=true;
-                                        for(int i=0;i<5;i++){
-                                          _controllers[i].clear();
-                                        }
+
+                                        _inputUsername=_controllers[0].text;
+                                        _inputNewPassword=_controllers[1].text;
+                                        _inputRepeatPassword=_controllers[2].text;
+                                        _inputUserType=_controllers[3].text;
+                                        _inputID=_controllers[4].text;
                                       });
                                       return;
                                     }
@@ -544,9 +657,12 @@ class _AddDetailsState extends State<AddDetails> {
                                           _errorText="Something went wrong";
                                           _errorTextColor=Colors.red;
                                           _errorTextVisible=true;
-                                          for(int i=0;i<5;i++){
-                                            _controllers[i].clear();
-                                          }
+
+                                          _inputUsername=_controllers[0].text;
+                                          _inputNewPassword=_controllers[1].text;
+                                          _inputRepeatPassword=_controllers[2].text;
+                                          _inputUserType=_controllers[3].text;
+                                          _inputID=_controllers[4].text;
                                         });
                                       }
                                     }
@@ -555,9 +671,12 @@ class _AddDetailsState extends State<AddDetails> {
                                         _errorText="User already exists";
                                         _errorTextColor=Colors.red;
                                         _errorTextVisible=true;
-                                        for(int i=0;i<5;i++){
-                                          _controllers[i].clear();
-                                        }
+
+                                        _inputUsername=_controllers[0].text;
+                                        _inputNewPassword=_controllers[1].text;
+                                        _inputRepeatPassword=_controllers[2].text;
+                                        _inputUserType=_controllers[3].text;
+                                        _inputID=_controllers[4].text;
                                       });
                                     }
                                     //Navigator.pop(context);

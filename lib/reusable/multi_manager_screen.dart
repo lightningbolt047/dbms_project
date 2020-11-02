@@ -41,7 +41,6 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
           Qtype: "R");
       var items = await server.getDecodedResponse();
       for (int i = 0; i < items.length; i++) {
-        print(items[i]["outID"]);
         _cards.add(OutletCard(username, items[i]["outID"]));
       }
     }

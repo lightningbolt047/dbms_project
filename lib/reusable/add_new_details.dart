@@ -31,6 +31,8 @@ class _AddDetailsState extends State<AddDetails> {
 
   String _producerName,_producerID,_producerPhoneNumber,_producerArea;
 
+  String _truckID,_truckArea,_truckNumberPlate,_truckEmpID;
+
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
@@ -956,7 +958,9 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.transportManager){
-      String _truckID,_truckArea,_truckNumberPlate,_truckEmpID;
+      for(int i=0;i<4;i++){
+        _controllers.add(TextEditingController());
+      }
       return Padding(
         padding: EdgeInsets.all(8),
         child: Column(
@@ -977,6 +981,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,30,0),
                               //width: 200,
                               child: TextField(
+                                controller: _controllers[0],
                                 decoration: InputDecoration(
                                   labelText: "Enter TruckID",
                                 ),
@@ -992,6 +997,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,30,0),
                               //width: 200,
                               child: TextField(
+                                controller: _controllers[1],
                                 decoration: InputDecoration(
                                   labelText: "Employee ID",
                                 ),
@@ -1007,6 +1013,7 @@ class _AddDetailsState extends State<AddDetails> {
                               padding: EdgeInsets.fromLTRB(1,0,2,0),
                               width: 200,
                               child: TextField(
+                                controller: _controllers[2],
                                 decoration: InputDecoration(
                                   labelText: "Vehicle Number Plate",
                                 ),
@@ -1032,6 +1039,7 @@ class _AddDetailsState extends State<AddDetails> {
                                     padding: EdgeInsets.fromLTRB(1,0,30,0),
                                     //width: 200,
                                     child: TextField(
+                                      controller: _controllers[3],
                                       decoration: InputDecoration(
                                         labelText: "Area (lower case)",
                                       ),
@@ -1042,12 +1050,72 @@ class _AddDetailsState extends State<AddDetails> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
+                                  child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
                                     //TODO perform sql actions here and close the screen
-                                    if(_truckID==null || _truckArea==null || _truckNumberPlate==null || _truckEmpID==null){
-                                      print("Invalid/Missing details! Exiting gracefully");
+                                    if(_truckID==null || _truckID=="" || _truckArea==null || _truckArea=="" || _truckNumberPlate==null || _truckNumberPlate=="" || _truckEmpID==null || _truckEmpID==""){
+                                      setState(() {
+                                        _errorText="Invalid/Missing details!";
+                                        _errorTextColor=Colors.red;
+                                        _errorTextVisible=true;
+
+                                        _truckID=_controllers[0].text;
+                                        _truckEmpID=_controllers[1].text;
+                                        _truckNumberPlate=_controllers[2].text;
+                                        _truckArea=_controllers[3].text;
+                                      });
+                                      return;
                                     }
-                                    Navigator.pop(context);
+                                    RequestServer server = RequestServer(action: "select TruckID from Truck where TruckID=\"$_truckID\"", Qtype: "R");
+                                    var items= await server.getDecodedResponse();
+                                    server.setAction("select EmpID from Employees where EmpID=\"$_truckEmpID\"");
+                                    server.setQtype("R");
+                                    var items1= await server.getDecodedResponse();
+                                    server.setAction("select Area from Transport where Area=\"${_truckArea.toLowerCase()}\"");
+                                    server.setQtype("R");
+                                    var items2=await server.getDecodedResponse();
+                                    if(items.toString().compareTo("Empty")==0 && items1.toString().compareTo("Empty")!=0 && items2.toString().compareTo("Empty")==0){
+                                      RequestServer serverInsert=RequestServer(action: "insert into Truck values(\"$_truckID\",\"$_truckNumberPlate\",\"$_truckEmpID\")",Qtype: "W");
+                                      var result=await serverInsert.getDecodedResponse();
+                                      serverInsert.setAction("insert into Transport values(\"$_truckID\",\"${_truckArea.toLowerCase()}\")");
+                                      var result1=await serverInsert.getDecodedResponse();
+                                      if(result.toString().compareTo("OK")==0 && result1.toString().compareTo("OK")==0){
+                                        setState(() {
+                                          _errorText="New Truck entry created Successfully";
+                                          _errorTextColor=Colors.green;
+                                          _errorTextVisible=true;
+                                          for(int i=0;i<4;i++){
+                                            _controllers[i].clear();
+                                          }
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                      else{
+                                        setState(() {
+                                          _errorText="Something went wrong";
+                                          _errorTextColor=Colors.red;
+                                          _errorTextVisible=true;
+
+                                          _truckID=_controllers[0].text;
+                                          _truckEmpID=_controllers[1].text;
+                                          _truckNumberPlate=_controllers[2].text;
+                                          _truckArea=_controllers[3].text;
+                                        });
+                                      }
+                                    }
+                                    else{
+                                      setState(() {
+                                        _errorText="Error: Check if Truck or Area is already being served and be sure to input EmpID of only an employee";
+                                        _errorTextColor=Colors.red;
+                                        _errorTextVisible=true;
+
+                                        _truckID=_controllers[0].text;
+                                        _truckEmpID=_controllers[1].text;
+                                        _truckNumberPlate=_controllers[2].text;
+                                        _truckArea=_controllers[3].text;
+                                      });
+                                    }
+
+                                    //Navigator.pop(context);
                                   },
                                   ),
 
@@ -1058,6 +1126,15 @@ class _AddDetailsState extends State<AddDetails> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Visibility(
+                        child: Text(_errorText,style: TextStyle(
+                            color: _errorTextColor
+                        ),),
+                        visible: _errorTextVisible,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -1082,7 +1159,7 @@ class _AddDetailsState extends State<AddDetails> {
       return "Create new User Account";
     }
     if(pageType==pageTypeList.transportManager){
-      return "Assign Driver to Truck";
+      return "Create and Assign Truck to driver";
     }
     return "Non Null AppBar name to keep from crashing😂";
   }

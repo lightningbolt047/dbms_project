@@ -122,25 +122,25 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="498" y="234" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1601294015819" />
-    <state width="1236" height="147" key="GridCell.Tab.0.bottom" timestamp="1604398531084">
+    <state width="1236" height="147" key="GridCell.Tab.0.bottom" timestamp="1604400305967">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="147" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1604398531084" />
+    <state width="1236" height="147" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1604400305967" />
     <state width="1323" height="177" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="147" key="GridCell.Tab.0.center" timestamp="1604398531084">
+    <state width="1236" height="147" key="GridCell.Tab.0.center" timestamp="1604400305967">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="147" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1604398531084" />
+    <state width="1236" height="147" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1604400305967" />
     <state width="1323" height="177" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="147" key="GridCell.Tab.0.left" timestamp="1604398531084">
+    <state width="1236" height="147" key="GridCell.Tab.0.left" timestamp="1604400305967">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="147" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1604398531084" />
+    <state width="1236" height="147" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1604400305967" />
     <state width="1323" height="177" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
-    <state width="1236" height="147" key="GridCell.Tab.0.right" timestamp="1604398531084">
+    <state width="1236" height="147" key="GridCell.Tab.0.right" timestamp="1604400305967">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="147" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1604398531084" />
+    <state width="1236" height="147" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1604400305967" />
     <state width="1323" height="177" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1599733210304" />
     <state x="172" y="0" key="SettingsEditor" timestamp="1602945734450">
       <screen x="0" y="0" width="1280" height="680" />
@@ -177,16 +177,5 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="471" y="132" key="svn.repositoryBrowser/0.0.1280.680@0.0.1280.680" timestamp="1601293709771" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/reusable/add_new_details.dart</url>
-          <line>712</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

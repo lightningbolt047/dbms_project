@@ -35,6 +35,9 @@ class _AddDetailsState extends State<AddDetails> {
 
   dynamic getBodyContent(){
     if(pageType==pageTypeList.employeeManager){
+      for(int i=0;i<7;i++){
+        _controllers.add(TextEditingController());
+      }
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -51,6 +54,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[0],
                           decoration: InputDecoration(
                             labelText: "Employee's Name",
                           ),
@@ -66,6 +70,7 @@ class _AddDetailsState extends State<AddDetails> {
                       padding: EdgeInsets.fromLTRB(1,0,2,0),
                       width: 200,
                       child: TextField(
+                        controller: _controllers[1],
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           labelText: "Employee's Phone Number",
@@ -89,6 +94,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[2],
                           decoration: InputDecoration(
                             labelText: "Employee's ID",
                           ),
@@ -104,6 +110,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[3],
                           decoration: InputDecoration(
                             labelText: "Employee's Job",
                           ),
@@ -119,6 +126,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,2,0),
                         width: 200,
                         child: TextField(
+                          controller: _controllers[4],
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
                             labelText: "YYYY-MM-DD",
@@ -142,6 +150,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[5],
                           decoration: InputDecoration(
                             labelText: "Employee's address",
                           ),
@@ -157,6 +166,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[6],
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: "Initial Salary",
@@ -167,15 +177,84 @@ class _AddDetailsState extends State<AddDetails> {
                         ),
                       ),
                     ),
-                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
-                      if(_empID==null || _empName==null || _phoneNumber==null || _job==null || _dateOfJoin==null || _address==null || _salary==null){
-                        print("One or more details missing/invalid. Exiting gracefully!");
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
+                      if(_empID==null || _empID=="" || _empName==null || _empName=="" || double.tryParse(_phoneNumber)==null || _job==null || _job=="" || _dateOfJoin==null || _dateOfJoin=="" || _address==null || _address=="" || _salary==null){
+                        setState(() {
+                          _errorText="Invalid/Missing details! Tip: Make sure PhoneNumber and Salary are just numbers";
+                          _errorTextColor=Colors.red;
+                          _errorTextVisible=true;
+
+                          _empName=_controllers[0].text;
+                          _phoneNumber=_controllers[1].text;
+                          _empID=_controllers[2].text;
+                          _job=_controllers[3].text;
+                          _dateOfJoin=_controllers[4].text;
+                          _address=_controllers[5].text;
+                          _salary=double.tryParse(_controllers[6].text);
+                        });
+                        return;
                       }
-                      Navigator.pop(context);
+                      RequestServer server = RequestServer(action: "select EmpID from Employees where EmpID=\"$_empID\"", Qtype: "R");
+                      var items= await server.getDecodedResponse();
+                      if(items.toString().compareTo("Empty")==0){
+                        RequestServer serverInsert=RequestServer(action: "insert into Employees values(\"$_empID\",\"$_empName\",\"$_phoneNumber\",\"$_job\",\"$_dateOfJoin\",$_salary,${_salary*0.5},\"$_address\")",Qtype: "W");
+                        var result=await serverInsert.getDecodedResponse();
+                        if(result.toString().compareTo("OK")==0){
+                          setState(() {
+                            _errorText="Employee entry Created Successfully";
+                            _errorTextColor=Colors.green;
+                            _errorTextVisible=true;
+                            for(int i=0;i<7;i++){
+                              _controllers[i].clear();
+                            }
+                          });
+                          Navigator.pop(context);
+                        }
+                        else{
+                          setState(() {
+                            _errorText="Something went wrong. Tip: Make sure the Date is in YYYY-MM-DD format";
+                            _errorTextColor=Colors.red;
+                            _errorTextVisible=true;
+
+                            _empName=_controllers[0].text;
+                            _phoneNumber=_controllers[1].text;
+                            _empID=_controllers[2].text;
+                            _job=_controllers[3].text;
+                            _dateOfJoin=_controllers[4].text;
+                            _address=_controllers[5].text;
+                            _salary=double.tryParse(_controllers[6].text);
+                          });
+                        }
+                      }
+                      else{
+                        setState(() {
+                          _errorText="Employee already exists";
+                          _errorTextColor=Colors.red;
+                          _errorTextVisible=true;
+
+                          _empName=_controllers[0].text;
+                          _phoneNumber=_controllers[1].text;
+                          _empID=_controllers[2].text;
+                          _job=_controllers[3].text;
+                          _dateOfJoin=_controllers[4].text;
+                          _address=_controllers[5].text;
+                          _salary=double.tryParse(_controllers[6].text);
+                        });
+                      }
+
                     },),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Visibility(
+                  child: Text(_errorText,style: TextStyle(
+                      color: _errorTextColor
+                  ),),
+                  visible: _errorTextVisible,
+                ),
+              )
             ],
           ),
         ),

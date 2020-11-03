@@ -20,18 +20,21 @@ class _AddDetailsState extends State<AddDetails> {
 
   final List<TextEditingController> _controllers=[];
 
+  String _empID,_empName,_phoneNumber,_job,_dateOfJoin,_address;
+  double _salary,_amountPayable=0;
+
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
 
   String _outletName,_outletPhoneNumber,_area,_outletID;
 
   String _inputUsername,_inputID,_inputNewPassword,_inputRepeatPassword,_inputUserType;
 
+  String _producerName,_producerID,_producerPhoneNumber,_producerArea;
+
   _AddDetailsState(this.pageType);
 
   dynamic getBodyContent(){
     if(pageType==pageTypeList.employeeManager){
-      String _empID,_empName,_phoneNumber,_job,_dateOfJoin,_address;
-      double _salary,_amountPayable=0;
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -708,7 +711,9 @@ class _AddDetailsState extends State<AddDetails> {
       );
     }
     if(pageType==pageTypeList.procurementManager){
-      String _producerName,_producerID,_producerPhoneNumber,_producerArea;
+      for(int i=0;i<4;i++){
+        _controllers.add(TextEditingController());
+      }
       return Padding(
         padding: EdgeInsets.all(8),
         child: Card(
@@ -725,6 +730,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[0],
                           decoration: InputDecoration(
                             labelText: "MilkProducer's Name",
                           ),
@@ -741,6 +747,7 @@ class _AddDetailsState extends State<AddDetails> {
                         width: 200,
                         child: TextField(
                           keyboardType: TextInputType.phone,
+                          controller: _controllers[1],
                           decoration: InputDecoration(
                             labelText: "MilkProducer's Phone Number",
                           ),
@@ -763,6 +770,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[2],
                           decoration: InputDecoration(
                             labelText: "Producer's new ID",
                           ),
@@ -785,6 +793,7 @@ class _AddDetailsState extends State<AddDetails> {
                         padding: EdgeInsets.fromLTRB(1,0,30,0),
                         //width: 200,
                         child: TextField(
+                          controller: _controllers[3],
                           decoration: InputDecoration(
                             labelText: "Producer's Area (lower case)",
                           ),
@@ -794,16 +803,74 @@ class _AddDetailsState extends State<AddDetails> {
                         ),
                       ),
                     ),
-                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: (){
-                      if(_producerID==null || _producerArea==null || _producerPhoneNumber==null || _producerName==null){
-                        print("One or more details missing/invalid. Exiting gracefully!");
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
+                      if(_producerID==null || _producerID=="" || _producerArea==null || _producerArea=="" || _producerPhoneNumber==null || _producerPhoneNumber=="" || _producerName==null || _producerName==""){
+                        setState(() {
+                          _errorText="Invalid/Missing details!";
+                          _errorTextColor=Colors.red;
+                          _errorTextVisible=true;
+
+                          _producerName=_controllers[0].text;
+                          _producerPhoneNumber=_controllers[1].text;
+                          _producerID=_controllers[2].text;
+                          _producerArea=_controllers[3].text;
+                        });
+                        return;
                       }
-                      //TODO Amount and AmountPayable is 0 by default. So no need to declare new variable for it and waste memoru
-                      Navigator.pop(context);
+                      RequestServer server = RequestServer(action: "select ProducerID from MilkProducer where ProducerID=\"$_producerID\"", Qtype: "R");
+                      var items= await server.getDecodedResponse();
+                      if(items.toString().compareTo("Empty")==0){
+                        RequestServer serverInsert=RequestServer(action: "insert into MilkProducer values(\"$_producerID\",\"$_producerName\",\"$_producerArea\",\"$_producerPhoneNumber\",0,0,0)",Qtype: "W");
+                        var result=await serverInsert.getDecodedResponse();
+                        if(result.toString().compareTo("OK")==0){
+                          setState(() {
+                            _errorText="New Producer entry created Successfully";
+                            _errorTextColor=Colors.green;
+                            _errorTextVisible=true;
+                            for(int i=0;i<5;i++){
+                              _controllers[i].clear();
+                            }
+                            Navigator.pop(context);
+                          });
+                        }
+                        else{
+                          setState(() {
+                            _errorText="Something went wrong. Tip: An Area can be entered only if it is being served";
+                            _errorTextColor=Colors.red;
+                            _errorTextVisible=true;
+
+                            _producerName=_controllers[0].text;
+                            _producerPhoneNumber=_controllers[1].text;
+                            _producerID=_controllers[2].text;
+                            _producerArea=_controllers[3].text;
+                          });
+                        }
+                      }
+                      else{
+                        setState(() {
+                          _errorText="Producer already exists";
+                          _errorTextColor=Colors.red;
+                          _errorTextVisible=true;
+
+                          _producerName=_controllers[0].text;
+                          _producerPhoneNumber=_controllers[1].text;
+                          _producerID=_controllers[2].text;
+                          _producerArea=_controllers[3].text;
+                        });
+                      }
                     },),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Visibility(
+                  child: Text(_errorText,style: TextStyle(
+                      color: _errorTextColor
+                  ),),
+                  visible: _errorTextVisible,
+                ),
+              )
             ],
           ),
         ),

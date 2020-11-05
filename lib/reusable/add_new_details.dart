@@ -908,7 +908,7 @@ class _AddDetailsState extends State<AddDetails> {
                             _errorText="New Producer entry created Successfully";
                             _errorTextColor=Colors.green;
                             _errorTextVisible=true;
-                            for(int i=0;i<5;i++){
+                            for(int i=0;i<4;i++){
                               _controllers[i].clear();
                             }
                             Navigator.pop(context);

@@ -151,7 +151,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
+                            MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.transportManager,_inputUsername)
                             )
                         );
                       }

@@ -26,18 +26,20 @@ class _OutletCardState extends State<OutletCard> {
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID and Outlets.outID=$outletID;", Qtype: "R");
     var items= await server.getDecodedResponse();
-    setState(() {
-      outletName=items[0]["Outlet_name"];
-      phoneNumber=items[0]["PhoneNumber"];
-      outletID=items[0]["outID"];
-      area=items[0]["Area"];
-      amountPayable=double.parse(items[0]["AmountPayable"]);
-      reqButter=double.parse(items[0]["ReqButter"]);
-      reqCheese=double.parse(items[0]["ReqCheese"]);
-      reqMilk=double.parse(items[0]["ReqMilk"]);
-      reqYogurt=double.parse(items[0]["ReqYogurt"]);
-      totalIncome=double.parse(items[0]["TotalIncome"]);
-    });
+    if(mounted){
+      setState(() {
+        outletName=items[0]["Outlet_name"];
+        phoneNumber=items[0]["PhoneNumber"];
+        outletID=items[0]["outID"];
+        area=items[0]["Area"];
+        amountPayable=double.parse(items[0]["AmountPayable"]);
+        reqButter=double.parse(items[0]["ReqButter"]);
+        reqCheese=double.parse(items[0]["ReqCheese"]);
+        reqMilk=double.parse(items[0]["ReqMilk"]);
+        reqYogurt=double.parse(items[0]["ReqYogurt"]);
+        totalIncome=double.parse(items[0]["TotalIncome"]);
+      });
+    }
     return true;
   }
 
@@ -238,13 +240,15 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select * from MilkProducer where ProducerID=$producerID", Qtype: "R");
     var items= await server.getDecodedResponse();
-    setState(() {
-      name=items[0]["Name"];
-      phoneNumber=items[0]["PhoneNumber"];
-      area=items[0]["Area"];
-      amountPayable=double.parse(items[0]["AmountPayable"]);
-      givenMilk=double.parse(items[0]["Litres"]);
-    });
+    if(mounted){
+      setState(() {
+        name=items[0]["Name"];
+        phoneNumber=items[0]["PhoneNumber"];
+        area=items[0]["Area"];
+        amountPayable=double.parse(items[0]["AmountPayable"]);
+        givenMilk=double.parse(items[0]["Litres"]);
+      });
+    }
     return true;
   }
 
@@ -402,11 +406,13 @@ class _TransportState extends State<Transport> {
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select Transport.TruckID,NumberPlate,EmpID,Area from Truck,Transport where Transport.TruckID=$truckID and Transport.TruckID=Truck.TruckID;", Qtype: "R");
     var items= await server.getDecodedResponse();
-    setState(() {
-      numberPlate=items[0]["NumberPlate"];
-      empID=items[0]["EmpID"];
-      area=items[0]["Area"];
-    });
+    if(mounted){
+      setState(() {
+        numberPlate=items[0]["NumberPlate"];
+        empID=items[0]["EmpID"];
+        area=items[0]["Area"];
+      });
+    }
     return true;
   }
 

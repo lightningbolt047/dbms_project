@@ -33,29 +33,46 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
     return "No text available";
   }
 
-  Future<List<Widget>> getCards() async {
-    List<Widget> _cards = [];
+  bool populated=false;
+  var items;
+
+
+  Future<dynamic> getFromServer() async{
     if (pageType == pageTypeList.outletManager) {
       RequestServer server = RequestServer(
           action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID;",
           Qtype: "R");
-      var items = await server.getDecodedResponse();
+      items = await server.getDecodedResponse();
+    }
+    else if (pageType == pageTypeList.procurementManager) {
+      RequestServer server = RequestServer(
+          action: "select ProducerID from MilkProducer", Qtype: "R");
+      items = await server.getDecodedResponse();
+    }
+    else if (pageType == pageTypeList.transportManager) {
+      RequestServer server = RequestServer(
+          action: "select TruckID from Transport", Qtype: "R");
+      items = await server.getDecodedResponse();
+    }
+    setState(() {
+      populated=true;
+    });
+  }
+
+  List<Widget> getCards() {
+    List<Widget> _cards = [];
+    //_cards.clear();
+    if (pageType == pageTypeList.outletManager) {
       for (int i = 0; i < items.length; i++) {
         _cards.add(OutletCard(username, items[i]["outID"]));
       }
     }
     else if (pageType == pageTypeList.procurementManager) {
-      RequestServer server = RequestServer(
-          action: "select ProducerID from MilkProducer", Qtype: "R");
-      var items = await server.getDecodedResponse();
       for (int i = 0; i < items.length; i++) {
         _cards.add(MilkProducerCard(username, items[i]["ProducerID"]));
       }
     }
     else if (pageType == pageTypeList.transportManager) {
-      RequestServer server = RequestServer(
-          action: "select TruckID from Transport", Qtype: "R");
-      var items = await server.getDecodedResponse();
       for (int i = 0; i < items.length; i++) {
         _cards.add(Transport(items[i]["TruckID"]));
       }
@@ -65,40 +82,73 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
 
   Function getFloatingActionButtonAction(){
     if(pageType==pageTypeList.outletManager){
-      return (){
-        showModalBottomSheet(context: context, builder:(context){
+      return () async{
+        await showModalBottomSheet(context: context, builder:(context){
           return AddDetails(pageTypeList.outletManager);  //Temp testing
         });
+        setState(() {
+          populated=false;
+        });
+        await getFromServer();
       };
     }
     if(pageType==pageTypeList.procurementManager){
-      return (){
-        showModalBottomSheet(context: context, builder:(context){
+      return () async{
+        await showModalBottomSheet(context: context, builder:(context){
           return AddDetails(pageTypeList.procurementManager);  //Temp testing
         });
+        setState(() {
+          populated=false;
+        });
+        await getFromServer();
       };
     }
     if(pageType==pageTypeList.transportManager){
-      return (){
-        showModalBottomSheet(context: context, builder:(context){
+      return () async{
+        await showModalBottomSheet(context: context, builder:(context){
           return AddDetails(pageTypeList.transportManager);  //Temp testing
         });
+        setState(() {
+          populated=false;
+        });
+        await getFromServer();
       };
     }
     return (){};
   }
 
 
+  @override
+  void initState() {
+    getFromServer();
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    if(populated==false){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text(
             getAppBarText()
           ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                child: Icon(FontAwesomeIcons.powerOff,color: Colors.white,),
+                onTap: (){
+                  Navigator.pop(context);
+                },
+              ),
+            )
+          ],
           backgroundColor: Colors.blueAccent,
         ),
         floatingActionButton: FloatingActionButton(
@@ -109,19 +159,9 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
           elevation: 3,
           onPressed: getFloatingActionButtonAction(),
         ),
-        body: FutureBuilder(
-          future: getCards(),
-          builder: (BuildContext context,AsyncSnapshot snapshot){
-            if(snapshot.data==null){
-              return Center(child: CircularProgressIndicator());
-            }
-            else{
-              return ListView(
-                children: snapshot.data,
-              );
-            }
-          },
-        ),
+        body: ListView(
+                children: getCards(),
+              ),
       ),
     );
   }

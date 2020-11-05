@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dairymanagement/reusable/add_new_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'reusable/const.dart';
 import 'reusable/cards.dart';
 import 'reusable/request_server.dart';
@@ -57,6 +58,17 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
           title: Text(
             "Employees"
           ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                child: Icon(FontAwesomeIcons.powerOff,color: Colors.white,),
+                onTap: (){
+                  Navigator.pop(context);
+                },
+              ),
+            )
+          ],
           backgroundColor: Colors.blueAccent,
         ),
         floatingActionButton: FloatingActionButton(

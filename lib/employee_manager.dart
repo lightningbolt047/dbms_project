@@ -19,11 +19,18 @@ class EmployeeManagerScreen extends StatefulWidget {
 class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
   String username="";
   var output;
+  bool populated=false;
   _EmployeeManagerScreenState(this.username);
 
-  Future<List<Widget>> getCards() async{
+  Future<void> getFromServer() async{
     RequestServer server=RequestServer(action:"select EmpID,Name,PhoneNumber from Employees",Qtype:"R");
     output=await server.getDecodedResponse();
+    setState(() {
+      populated=true;
+    });
+  }
+
+  List<Widget> getCards() {
     List<Widget> _cards=[];
     for(int i=0;i<output.length;i++){
       _cards.add(EmployeeCard(username,output[i]["EmpID"],output[i]["Name"],output[i]["PhoneNumber"]));
@@ -33,11 +40,17 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
 
   @override
   void initState() {
+    getFromServer();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if(populated==false){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -51,32 +64,24 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
             Icons.add
           ),
           elevation: 3,
-          onPressed: (){
+          onPressed: () async{
           /*  Navigator.push(context,MaterialPageRoute(builder: (context){
               return AddDetails(pageTypeList.employeeManager);
             })); */
 
-          showModalBottomSheet(context: context, builder:(context){
+          await showModalBottomSheet(context: context, builder:(context){
             return AddDetails(pageTypeList.employeeManager);  //Temp testing
           });
+          setState(() {
+            populated=false;
+          });
+          await getFromServer();
           },
           //TODO This is where employee data insertion happens
         ),
-        body: FutureBuilder(
-          future: getCards(),
-          builder: (BuildContext context, AsyncSnapshot snapshot){
-            if(snapshot.data==null){
-              return Center(
-                  child:CircularProgressIndicator(),
-              );
-            }
-            else{
-              return ListView(
-                children: snapshot.data,
-              );
-            }
-          },
-        )
+        body:ListView(
+                children: getCards(),
+              ),
       ),
     );
   }

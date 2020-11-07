@@ -201,7 +201,7 @@ class _FinanceManagerScreenState extends State<FinanceManagerScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RoundActionButton(child: Icon(FontAwesomeIcons.minus,color: Colors.white,),action: (){
+                  child: RoundActionButton(child: Icon(FontAwesomeIcons.arrowLeft,color: Colors.white,),action: (){
                     setState(() {
                       if(date>0){
                         date--;
@@ -212,7 +212,7 @@ class _FinanceManagerScreenState extends State<FinanceManagerScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RoundActionButton(child: Icon(FontAwesomeIcons.plus,color: Colors.white,),action: (){
+                  child: RoundActionButton(child: Icon(FontAwesomeIcons.arrowRight,color: Colors.white,),action: (){
                     setState(() {
                       if(date<dates.length-1){
                         date++;

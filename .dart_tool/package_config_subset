@@ -44,8 +44,8 @@ file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0-nulls
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0-nullsafety.1/lib/
 font_awesome_flutter
 2.0
-file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.8.1/
-file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.8.1/lib/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.10.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.10.0/lib/
 http
 2.4
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.2/
@@ -68,8 +68,12 @@ file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0-nullsafety.
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0-nullsafety.1/lib/
 pedantic
 2.1
-file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.0/
-file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.0/lib/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.2/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.2/lib/
+percent_indicator
+2.7
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/percent_indicator-2.1.8/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/percent_indicator-2.1.8/lib/
 source_span
 2.10
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.0-nullsafety.2/

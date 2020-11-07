@@ -18,6 +18,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
   double availMilk=0,availButter=0,availCheese=0,availYogurt=0;
 
   double saleMilk=0,saleButter=0,saleCheese=0,saleYogurt=0;
+  bool populated=false;
 
   _OutletUniqueScreenState(this.outletID);
 
@@ -34,6 +35,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
       availMilk=double.parse(items[0]["Milk"]);
       availYogurt=double.parse(items[0]["Yogurt"]);
       totalIncome=double.parse(items[0]["TotalIncome"]);
+      populated=true;
     });
     return true;
   }
@@ -48,7 +50,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(outletName==""){
+    if(populated==false){
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -354,23 +356,31 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                           fontSize: 20,
                                         ),
                                       ),
-                                      onPressed: (){
+                                      onPressed: () async{
                                         //TODO sql queries to sell items, set saleValues to 0 and add the amount to amountPayable and _singleSessionIncome
+                                        double oldAmountPayable=amountPayable;
+                                        amountPayable+=saleMilk*milkRate;
+                                        amountPayable+=saleButter*butterRate;
+                                        amountPayable+=saleCheese*cheeseRate;
+                                        amountPayable+=saleYogurt*yogurtRate;
+                                        availMilk-=saleMilk;
+                                        availButter-=saleButter;
+                                        availCheese-=saleCheese;
+                                        availYogurt-=saleYogurt;
+                                        RequestServer server=RequestServer(action: "UPDATE Available SET Milk=$availMilk,Yogurt=$availYogurt,Cheese=$availCheese,Butter=$availButter where outID=\"$outletID\"",Qtype: "W");
+                                        var response=await server.getDecodedResponse();
+                                        server.setAction("UPDATE Outlets SET AmountPayable=$amountPayable,TotalIncome+=${amountPayable-oldAmountPayable} where outID=\"$outletID\"");
+                                        var response1=await server.getDecodedResponse();
+                                        if(response.toString().compareTo("OK")!=0 || response1.toString().compareTo("OK")!=0){
+                                          print("An error occurred: Response0: "+response.toString()+" Response1: "+response1.toString());
+                                          return;
+                                        }
                                         setState(() {
-                                          amountPayable+=saleMilk*milkRate;
-                                          amountPayable+=saleButter*butterRate;
-                                          amountPayable+=saleCheese*cheeseRate;
-                                          amountPayable+=saleYogurt*yogurtRate;
-
-                                          availMilk-=saleMilk;
-                                          availButter-=saleButter;
-                                          availCheese-=saleCheese;
-                                          availYogurt-=saleYogurt;
-
                                           _singleSessionIncome+=(saleMilk*milkRate)+(saleButter*butterRate)+(saleCheese*cheeseRate)+(saleYogurt*yogurtRate);
-
                                           saleMilk=saleButter=saleCheese=saleYogurt=0;
+                                          populated=false;
                                         });
+                                        await populateData();
                                       },
                                     ),
                                   ),

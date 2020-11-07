@@ -1,4 +1,5 @@
 import 'package:dairymanagement/reusable/const.dart';
+import 'package:dairymanagement/reusable/request_server.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,6 +16,9 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
   String outletID="";
 
   _RequestItemsSheetState(this.outletID);
+  bool _errorTextVisible=false;
+  Color _errorTextColor=Colors.green;
+  String _errorText="";
 
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
   @override
@@ -40,12 +44,35 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.w600,
                   ),),
-                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: (){
-                      setState(() {
-                        //TODO Execute SQL query to modify values for the outlet (Place request for new stocks) and close the activity
-                        Navigator.pop(context);
+                    RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: () async{
+                      RequestServer server=RequestServer(action: "SELECT * from Required  where outID=\"$outletID\"",Qtype: "R");
+                      var items=await server.getDecodedResponse();
+                      double _milk,_butter,_cheese,_yogurt;
+                      _milk=double.parse(items[0]['Milk']);
+                      _butter=double.parse(items[0]['Butter']);
+                      _cheese=double.parse(items[0]['Cheese']);
+                      _yogurt=double.parse(items[0]['Yogurt']);
+                      _milk+=_reqMilk;
+                      _butter+=_reqButter;
+                      _cheese+=_reqCheese;
+                      _yogurt+=_reqYogurt;
+                      server.setAction("UPDATE Required SET Milk=$_milk,Yogurt=$_yogurt,Cheese=$_cheese,Butter=$_butter where outID=\"$outletID\"");
+                      server.setQtype("W");
+                      var response=await server.getDecodedResponse();
+                      if(response.toString().compareTo("OK")!=0){
+                        setState(() {
+                          _errorTextVisible=true;
+                          _errorText="Something went wrong";
+                          _errorTextColor=Colors.red;
+                        });
                         return;
+                      }
+                      setState(() {
+                        _errorTextVisible=true;
+                        _errorText="Order placed successfully";
+                        _errorTextColor=Colors.green;
                       });
+                      Navigator.pop(context);
                     },),
         ]
                 ),
@@ -189,6 +216,12 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                     ],
                   ),
                 ),
+                Visibility(
+                  child: Text(_errorText,style: TextStyle(
+                      color: _errorTextColor
+                  ),),
+                  visible: _errorTextVisible,
+                )
               ],
             ),
           ],

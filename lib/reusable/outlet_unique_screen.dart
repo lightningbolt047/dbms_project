@@ -357,7 +357,6 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                         ),
                                       ),
                                       onPressed: () async{
-                                        //TODO sql queries to sell items, set saleValues to 0 and add the amount to amountPayable and _singleSessionIncome
                                         double oldAmountPayable=amountPayable;
                                         amountPayable+=saleMilk*milkRate;
                                         amountPayable+=saleButter*butterRate;

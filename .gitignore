@@ -2,3 +2,5 @@ build
 .dart_tool
 .idea
 debug.log
+android
+ios

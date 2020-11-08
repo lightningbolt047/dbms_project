@@ -393,7 +393,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                         ),
                                       ),
                                       onPressed: (){
-                                        //TODO sql queries to pay the company items
+                                        //TODO sql queries to pay the company money
                                       },
                                     ),
                                   ),

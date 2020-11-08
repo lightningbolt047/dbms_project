@@ -71,6 +71,17 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       return value/maxValue;
     }
   }
+
+  void updateStateFromChild() async{
+    if(pageType==pageTypeList.outletManager){
+      setState(() {
+        populated=false;
+      });
+      await getFromServer();
+    }
+  }
+
+
   List<Widget> getCards() {
     double availMilk,availButter,availCheese,availYogurt;
     availMilk=availButter=availCheese=availYogurt=0;
@@ -170,7 +181,7 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
         ),
       ));
       for (int i = 0; i < items.length; i++) {
-        _cards.add(OutletCard(username, items[i]["outID"]));
+        _cards.add(OutletCard(username, items[i]["outID"],updateStateFromChild));
       }
     }
     else if (pageType == pageTypeList.procurementManager) {

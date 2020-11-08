@@ -9,19 +9,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class OutletCard extends StatefulWidget {
   String username,outletID;
-  OutletCard(this.username,this.outletID);
+  Function updateParentState;
+  OutletCard(this.username,this.outletID,this.updateParentState);
   @override
-  _OutletCardState createState() => _OutletCardState(this.username,this.outletID);
+  _OutletCardState createState() => _OutletCardState(this.username,this.outletID,this.updateParentState);
 }
 
 class _OutletCardState extends State<OutletCard> {
   String username="",area="";
+  Function updateParentState;
   String outletName="",phoneNumber="",outletID="";
   double reqMilk=0,reqYogurt=0,reqCheese=0,reqButter=0,amountPayable=0,totalIncome=0;
-  _OutletCardState(this.username,this.outletID);
+  _OutletCardState(this.username,this.outletID,this.updateParentState);
   String _inputPassword;
 
-
+  bool populated=false;
 
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID and Outlets.outID=$outletID;", Qtype: "R");
@@ -38,6 +40,7 @@ class _OutletCardState extends State<OutletCard> {
         reqMilk=double.parse(items[0]["ReqMilk"]);
         reqYogurt=double.parse(items[0]["ReqYogurt"]);
         totalIncome=double.parse(items[0]["TotalIncome"]);
+        populated=true;
       });
     }
     return true;
@@ -53,12 +56,90 @@ class _OutletCardState extends State<OutletCard> {
   }
 
   Function getDeliverStockFunction(){
-      return (){
-        setState(() {
-          //TODO Perform Sql for delivery
-          reqMilk=reqCheese=reqYogurt=reqButter=0;
-          print("Stocks Delivered");
-        });
+      return () async{
+        RequestServer server=RequestServer(action: "select * from CurrentAvailability where onDate=\"${dates[date]}\"",Qtype: "R");
+        var items= await server.getDecodedResponse();
+        double curMilk,curButter,curCheese,curYogurt;
+        curMilk=double.parse(items[0]['Milk']);
+        curButter=double.parse(items[0]['Butter']);
+        curCheese=double.parse(items[0]['Cheese']);
+        curYogurt=double.parse(items[0]['Yogurt']);
+
+        double orderMilk,orderButter,orderCheese,orderYogurt;
+
+        if(curMilk<reqMilk){
+          orderMilk=curMilk;
+        }
+        else{
+          orderMilk=reqMilk;
+        }
+
+        if(curButter<reqButter){
+          orderButter=curButter;
+        }
+        else{
+          orderButter=reqButter;
+        }
+
+        if(curCheese<reqCheese){
+          orderCheese=curCheese;
+        }
+        else{
+          orderCheese=reqCheese;
+        }
+
+        if(curYogurt<reqYogurt){
+          orderYogurt=curYogurt;
+        }
+        else{
+          orderYogurt=reqYogurt;
+        }
+        curMilk-=orderMilk;
+        curButter-=orderButter;
+        curCheese-=orderCheese;
+        curYogurt-=orderYogurt;
+
+        server.setAction("UPDATE CurrentAvailability SET Milk=$curMilk,Yogurt=$curYogurt,Cheese=$curCheese,Butter=$curButter where onDate=\"${dates[date]}\"");
+        server.setQtype("W");
+        var response=await server.getDecodedResponse();
+
+        server.setAction("select * from Available where outID=\"$outletID\"");
+        server.setQtype("R");
+
+        var items1=await server.getDecodedResponse();
+
+        double availMilk,availButter,availYogurt,availCheese;
+        availMilk=double.parse(items1[0]['Milk']);
+        availButter=double.parse(items1[0]['Butter']);
+        availCheese=double.parse(items1[0]['Cheese']);
+        availYogurt=double.parse(items1[0]['Yogurt']);
+
+        availMilk+=orderMilk;
+        availButter+=orderButter;
+        availCheese+=orderCheese;
+        availYogurt+=orderYogurt;
+
+        server.setAction("UPDATE Available SET Milk=$availMilk,Yogurt=$availYogurt,Cheese=$availCheese,Butter=$availButter where outID=\"$outletID\"");
+        server.setQtype("W");
+        var response1=await server.getDecodedResponse();
+        server.setAction("UPDATE Required SET Milk=0,Yogurt=0,Cheese=0,Butter=0 where outID=\"$outletID\"");
+        var response2=await server.getDecodedResponse();
+        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+          setState(() {
+            //TODO Perform Sql for delivery
+            reqMilk-=orderMilk;
+            reqCheese-=orderCheese;
+            reqYogurt-=orderYogurt;
+            reqButter-=orderButter;
+            print("Stocks Delivered");
+            populated=false;
+          });
+          populateData();
+          updateParentState();
+        }
+        else{
+          print(response.toString());
+        }
       };
   }
 
@@ -96,7 +177,7 @@ class _OutletCardState extends State<OutletCard> {
 
   @override
   Widget build(BuildContext context) {
-    if(outletName==""){
+    if(populated==false){
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -375,8 +456,6 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                     textColor: Colors.white,
                     child: Text("Procure Milk"),
                     onPressed: () async{
-                      //TODO Execute corresponding sql commands + Add in current availability!!!
-                      print("Hello");
                       RequestServer server=RequestServer(action: "select Litres, Amount from MilkProducer where ProducerID=\"$producerID\"",Qtype: "R");
                       var items=await server.getDecodedResponse();
                       double litres=double.parse(items[0]['Litres']);

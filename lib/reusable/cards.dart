@@ -90,7 +90,6 @@ class _OutletCardState extends State<OutletCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     populateData();
     super.initState();
   }
@@ -260,10 +259,22 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
         return PasswordConfirm();  //Temp testing
       });
       _inputPassword=_returnedData;
-      setState(() {
-        //TODO Execute sql commands to reduce amount payable to 0 in table (Pay the producer)
-        amountPayable=0;
-      });
+      if(true){ //TODO password validation call as the if condition
+        RequestServer server=RequestServer(action: "UPDATE Expenses SET Amount+=$amountPayable where onDate=\"${dates[date]}\"",Qtype: "W");
+        var response=await server.getDecodedResponse();
+        server.setAction("UPDATE NetAmount SET Expense+=$amountPayable where onDate=\"${dates[date]}\"");
+        var response1=await server.getDecodedResponse();
+        server.setAction("UPDATE NetAmount SET Profit=Income-Expense where onDate=\"${dates[date]}\"");
+        var response2=await server.getDecodedResponse();
+        server.setAction("UPDATE MilkProducer SET AmountPayable=0 where ProducerID=\"$producerID\"");
+        var response3=await server.getDecodedResponse();
+        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+          setState(() {
+            amountPayable=0;
+          });
+        }
+
+      }
     };
   }
 
@@ -278,7 +289,6 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
 
   @override
   void initState(){
-    // TODO: implement initState
     populateData();
     super.initState();
   }
@@ -364,13 +374,27 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     child: Text("Procure Milk"),
-                    onPressed: (){
+                    onPressed: () async{
                       //TODO Execute corresponding sql commands + Add in current availability!!!
-                      setState(() {
-                        givenMilk+=getMilk;
-                        amountPayable+=getMilk*milkRate;
-                        getMilk=0;
-                      });
+                      RequestServer server=RequestServer(action: "select Litres, Amount from MilkProducer where ProducerID=\"$producerID\"",Qtype: "R");
+                      var response=await server.getDecodedResponse();
+                      double litres=double.parse(response[0]['Litres']);
+                      double amount=double.parse(response[0]['Amount']);
+                      litres+=getMilk;
+                      amountPayable+=getMilk*procureMilkRate;
+                      amount+=getMilk*procureMilkRate;
+                      server.setAction("UPDATE MilkProducer SET Litres=$litres,Amount=$amount,AmountPayable=$amountPayable where ProducerID=\"$producerID\"");
+                      server.setQtype("W");
+                      var response2 = await server.getDecodedResponse();
+                      if(response2.toString().compareTo("OK")==0){
+                        setState(() {
+                          givenMilk+=getMilk;
+                          getMilk=0;
+                          print("Update success");
+                        });
+                        return;
+                      }
+                      print(response2.toString());
                     } ,
                   ),
                   sizedBoxLargeInRow,
@@ -420,7 +444,6 @@ class _TransportState extends State<Transport> {
 
   @override
   void initState() {
-    // TODO: implement initState
     populateData();
     super.initState();
   }

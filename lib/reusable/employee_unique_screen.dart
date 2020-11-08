@@ -61,7 +61,6 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     populateData();
     super.initState();
   }

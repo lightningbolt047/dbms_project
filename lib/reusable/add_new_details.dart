@@ -497,7 +497,6 @@ class _AddDetailsState extends State<AddDetails> {
                       ),
                     ),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
-                      //TODO perform sql actions here
                       if(_area==null || _outletID==null || _outletPhoneNumber==null){
                         setState(() {
                             _errorText="Invalid/Missing details!";
@@ -689,7 +688,6 @@ class _AddDetailsState extends State<AddDetails> {
                                 ),
                                 Expanded(
                                   child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
-                                    //TODO perform sql actions here and close the screen
                                     if(_inputUsername==null ||_inputUsername=="" || _inputNewPassword==null || _inputNewPassword=="" || _inputRepeatPassword==null || _inputUserType==null || _inputUserType==""){
                                       setState(() {
                                         _errorText="Invalid/Missing details!";
@@ -1051,7 +1049,6 @@ class _AddDetailsState extends State<AddDetails> {
                                 ),
                                 Expanded(
                                   child: RoundActionButton(child: Icon(FontAwesomeIcons.check,color: Colors.white,),action: () async{
-                                    //TODO perform sql actions here and close the screen
                                     if(_truckID==null || _truckID=="" || _truckArea==null || _truckArea=="" || _truckNumberPlate==null || _truckNumberPlate=="" || _truckEmpID==null || _truckEmpID==""){
                                       setState(() {
                                         _errorText="Invalid/Missing details!";

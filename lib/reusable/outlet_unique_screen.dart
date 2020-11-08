@@ -43,7 +43,6 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     populateData();
     super.initState();
   }
@@ -358,10 +357,10 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                       ),
                                       onPressed: () async{
                                         double oldAmountPayable=amountPayable;
-                                        amountPayable+=saleMilk*milkRate;
-                                        amountPayable+=saleButter*butterRate;
-                                        amountPayable+=saleCheese*cheeseRate;
-                                        amountPayable+=saleYogurt*yogurtRate;
+                                        amountPayable+=saleMilk*saleMilkRate;
+                                        amountPayable+=saleButter*saleButterRate;
+                                        amountPayable+=saleCheese*saleCheeseRate;
+                                        amountPayable+=saleYogurt*saleYogurtRate;
                                         availMilk-=saleMilk;
                                         availButter-=saleButter;
                                         availCheese-=saleCheese;
@@ -375,7 +374,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                           return;
                                         }
                                         setState(() {
-                                          _singleSessionIncome+=(saleMilk*milkRate)+(saleButter*butterRate)+(saleCheese*cheeseRate)+(saleYogurt*yogurtRate);
+                                          _singleSessionIncome+=(saleMilk*saleMilkRate)+(saleButter*saleButterRate)+(saleCheese*saleCheeseRate)+(saleYogurt*saleYogurtRate);
                                           saleMilk=saleButter=saleCheese=saleYogurt=0;
                                           populated=false;
                                         });

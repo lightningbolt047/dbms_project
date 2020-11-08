@@ -82,14 +82,13 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
             })); */
 
           await showModalBottomSheet(context: context, builder:(context){
-            return AddDetails(pageTypeList.employeeManager);  //Temp testing
+            return AddDetails(pageTypeList.employeeManager);
           });
           setState(() {
             populated=false;
           });
           await getFromServer();
           },
-          //TODO This is where employee data insertion happens
         ),
         body:ListView(
                 children: getCards(),

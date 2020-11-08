@@ -376,17 +376,29 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                     child: Text("Procure Milk"),
                     onPressed: () async{
                       //TODO Execute corresponding sql commands + Add in current availability!!!
+                      print("Hello");
                       RequestServer server=RequestServer(action: "select Litres, Amount from MilkProducer where ProducerID=\"$producerID\"",Qtype: "R");
-                      var response=await server.getDecodedResponse();
-                      double litres=double.parse(response[0]['Litres']);
-                      double amount=double.parse(response[0]['Amount']);
+                      var items=await server.getDecodedResponse();
+                      double litres=double.parse(items[0]['Litres']);
+                      double amount=double.parse(items[0]['Amount']);
                       litres+=getMilk;
                       amountPayable+=getMilk*procureMilkRate;
                       amount+=getMilk*procureMilkRate;
                       server.setAction("UPDATE MilkProducer SET Litres=$litres,Amount=$amount,AmountPayable=$amountPayable where ProducerID=\"$producerID\"");
                       server.setQtype("W");
-                      var response2 = await server.getDecodedResponse();
-                      if(response2.toString().compareTo("OK")==0){
+                      var response=await server.getDecodedResponse();
+                      server.setAction("select Name,QtyProduced from Product natural join Conversion order by PID;");
+                      server.setQtype("R");
+                      var items1=await server.getDecodedResponse();
+                      double milk2milk=getMilk*(double.parse(items1[0]['QtyProduced']));
+                      double milk2butter=getMilk*(double.parse(items1[1]['QtyProduced']));
+                      double milk2cheese=getMilk*(double.parse(items1[2]['QtyProduced']));
+                      double milk2yogurt=getMilk*(double.parse(items1[3]['QtyProduced']));
+                      
+                      server.setAction("UPDATE CurrentAvailability SET Milk=$milk2milk,Yogurt=$milk2yogurt,Cheese=$milk2cheese,Butter=$milk2butter where onDate=\"${dates[date]}\"");
+                      server.setQtype("W");
+                      var response1=await server.getDecodedResponse();
+                      if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0){
                         setState(() {
                           givenMilk+=getMilk;
                           getMilk=0;
@@ -394,7 +406,6 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                         });
                         return;
                       }
-                      print(response2.toString());
                     } ,
                   ),
                   sizedBoxLargeInRow,

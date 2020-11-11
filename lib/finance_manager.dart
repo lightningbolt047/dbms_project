@@ -85,6 +85,7 @@ class _FinanceManagerScreenState extends State<FinanceManagerScreen> {
     }
     calculateProfit();
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
           title: Text("Finance Status"),

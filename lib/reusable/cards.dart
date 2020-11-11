@@ -123,7 +123,16 @@ class _OutletCardState extends State<OutletCard> {
         server.setAction("UPDATE Available SET Milk=$availMilk,Yogurt=$availYogurt,Cheese=$availCheese,Butter=$availButter where outID=\"$outletID\"");
         server.setQtype("W");
         var response1=await server.getDecodedResponse();
-        server.setAction("UPDATE Required SET Milk=0,Yogurt=0,Cheese=0,Butter=0 where outID=\"$outletID\"");
+        server.setAction("select * from Required where outID=\"$outletID\"");
+        server.setQtype("R");
+        var items2=await server.getDecodedResponse();
+        double curReqMilk,curReqButter,curReqCheese,curReqYogurt;
+        curReqMilk=double.parse(items2[0]['Milk'])-orderMilk;
+        curReqButter=double.parse(items2[0]['Butter'])-orderButter;
+        curReqCheese=double.parse(items2[0]['Cheese'])-orderCheese;
+        curReqYogurt=double.parse(items2[0]['Yogurt'])-orderYogurt;
+        server.setAction("UPDATE Required SET Milk=$curReqMilk,Yogurt=$curReqYogurt,Cheese=$curReqCheese,Butter=$curReqButter where outID=\"$outletID\"");
+        server.setQtype("W");
         var response2=await server.getDecodedResponse();
         if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
           setState(() {

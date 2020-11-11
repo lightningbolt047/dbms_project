@@ -40,6 +40,52 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
     return true;
   }
 
+  String getAmountPayButtonText(){
+    if(amountPayable==0){
+      return "No Outstanding Payments";
+    }
+    else{
+      return "Pay Outstanding Amount to Company: $amountPayable";
+    }
+  }
+
+  Function getAmountPayButtonFunction(){
+    return () async{
+      RequestServer server=RequestServer(action: "select Amount from Income where onDate=\"${dates[date]}\"",Qtype: "R");
+      var items=await server.getDecodedResponse();
+      totalIncome+=amountPayable;
+      double amount;
+      amount=double.parse(items[0]['Amount']);
+      amount+=amountPayable;
+      server.setAction("UPDATE Income SET Amount=$amount,Tax=Amount*$tax,NetAmount=Amount-Tax where onDate=\"${dates[date]}\"");
+      server.setQtype("W");
+      var response=await server.getDecodedResponse();
+
+      server.setAction("select NetAmount from Income where onDate=\"${dates[date]}\"");
+      server.setQtype("R");
+      var items1=await server.getDecodedResponse();
+
+      double netAmount=double.parse(items1[0]['NetAmount']);
+
+      server.setAction("select Income from NetAmount where onDate=\"${dates[date]}\"");
+      var items2=await server.getDecodedResponse();
+      double income=double.parse(items2[0]['Income']);
+      server.setAction("UPDATE NetAmount SET Income=$netAmount,Profit=Income-Expense where onDate=\"${dates[date]}\"");
+      server.setQtype("W");
+      var response1=await server.getDecodedResponse();
+
+      server.setAction("UPDATE Outlets SET TotalIncome=$totalIncome,AmountPayable=0 where outID=\"$outletID\"");
+      server.setQtype("W");
+
+      var response2=await server.getDecodedResponse();
+
+      if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+        setState(() {
+          amountPayable=0;
+        });
+      }
+    };
+  }
 
   @override
   void initState() {
@@ -388,14 +434,12 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                     child: FlatButton(
                                       color: Colors.lightBlue,
                                       textColor: Colors.white,
-                                      child: Text("Pay Outstanding Amount to Company: $amountPayable",
+                                      child: Text(getAmountPayButtonText(),
                                         style: TextStyle(
                                           fontSize: 20,
                                         ),
                                       ),
-                                      onPressed: (){
-                                        //TODO sql queries to pay the company money
-                                      },
+                                      onPressed: (amountPayable==0)?null:getAmountPayButtonFunction(),
                                     ),
                                   ),
                                   Padding(

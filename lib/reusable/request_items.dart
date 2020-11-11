@@ -36,6 +36,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
       _reqYogurt = double.parse(items[0]['Yogurt']);
       populated = true;
     });
+    return true;
   }
 
    void initState(){

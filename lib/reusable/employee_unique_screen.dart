@@ -44,10 +44,30 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
         return PasswordConfirm();  //Temp testing
       });
       _inputPassword=_returnedData;
-      //TODO Invoke password validation and perform SQL queries
-      setState(() {
-        amountPayable=0;
-      });
+      if(true){//TODO Invoke password validation here
+        RequestServer server=RequestServer(action: "select Amount from Expenses where onDate=\"${dates[date]}\"",Qtype: "R");
+        var items=await server.getDecodedResponse();
+        double curExpense=0;
+        curExpense=double.parse(items[0]['Amount']);
+        curExpense+=amountPayable;
+        server.setAction("UPDATE Expenses SET Amount=$curExpense where onDate=\"${dates[date]}\"");
+        server.setQtype("W");
+        var response=await server.getDecodedResponse();
+        server.setAction("UPDATE Employees SET AmountPayable=0 where EmpID=\"$id\"");
+        var response1=await server.getDecodedResponse();
+        server.setAction("UPDATE NetAmount SET Expense=$curExpense,Profit=Income-Expense where onDate=\"${dates[date]}\"");
+        var response2=await server.getDecodedResponse();
+        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+          setState(() {
+            amountPayable=0;
+          });
+          return;
+        }
+        print("An error occurred");
+        print(response.toString());
+        print(response1.toString());
+        print(response2.toString());
+      }
     };
   }
 

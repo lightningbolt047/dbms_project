@@ -110,7 +110,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
             elevation: 3,
             onPressed: (){
               showModalBottomSheet(context: context, builder:(context){
-                return RequestItemsSheet("012");  //Temp testing outletID is the argument here
+                return RequestItemsSheet(outletID);  //Temp testing outletID is the argument here
               });
             },
           ),

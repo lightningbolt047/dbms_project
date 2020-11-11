@@ -5,11 +5,12 @@ import 'package:http/http.dart';
 import 'const.dart';
 import 'request_server.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 
 class OutletCard extends StatefulWidget {
-  String username,outletID;
-  Function updateParentState;
+  final String username,outletID;
+  final Function updateParentState;
   OutletCard(this.username,this.outletID,this.updateParentState);
   @override
   _OutletCardState createState() => _OutletCardState(this.username,this.outletID,this.updateParentState);
@@ -142,14 +143,14 @@ class _OutletCardState extends State<OutletCard> {
       };
   }
 
-  String getAmountPayText(){
-    if(amountPayable==0){
-      return "Paid ✅";
-    }
-    else{
-      return "Pay $amountPayable";
-    }
-  }
+  // String getAmountPayText(){
+  //   if(amountPayable==0){
+  //     return "Paid ✅";
+  //   }
+  //   else{
+  //     return "Pay $amountPayable";
+  //   }
+  // }
 
   // Function getAmountPayFunction(){
   //   return () async{
@@ -172,6 +173,13 @@ class _OutletCardState extends State<OutletCard> {
   void initState() {
     populateData();
     super.initState();
+  }
+
+  double getProgressBarPercentValue(double number){
+    if(number>500){
+      return 1;
+    }
+    return number/500;
   }
 
   @override
@@ -214,17 +222,96 @@ class _OutletCardState extends State<OutletCard> {
                         Text(outletID),
                       ],
                     ),
-                    Text(
-                      "Required Milk: $reqMilk",
+                    Row(
+                      children: [
+                        Text(
+                          "Required Milk: ",
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Container(
+                            width: 50,
+                            child: LinearProgressIndicator(
+                              minHeight: 8,
+                              value: 1-getProgressBarPercentValue(reqMilk),
+                              valueColor:  AlwaysStoppedAnimation<Color>(Colors.blue),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text("$reqMilk"),
+                        )
+                      ],
                     ),
-                    Text(
-                      "Required Yogurt: $reqYogurt",
+                    Row(
+                      children: [
+                        Text(
+                          "Required Butter: ",
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Container(
+                            width: 50,
+                            child: LinearProgressIndicator(
+                              minHeight: 8,
+                              backgroundColor: Colors.yellowAccent,
+                              value: 1-getProgressBarPercentValue(reqButter),
+                              valueColor:  AlwaysStoppedAnimation<Color>(Colors.yellow),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text("$reqButter"),
+                        )
+                      ],
                     ),
-                    Text(
-                      "Required Butter: $reqButter",
+                    Row(
+                      children: [
+                        Text(
+                          "Required Cheese: ",
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Container(
+                            width: 50,
+                            child: LinearProgressIndicator(
+                              minHeight: 8,
+                              value: 1-getProgressBarPercentValue(reqCheese),
+                              backgroundColor: Colors.lightGreenAccent,
+                              valueColor:  AlwaysStoppedAnimation<Color>(Colors.lightGreen),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text("$reqCheese"),
+                        )
+                      ],
                     ),
-                    Text(
-                      "Required Cheese: $reqCheese",
+                    Row(
+                      children: [
+                        Text(
+                          "Required Yogurt: ",
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Container(
+                            width: 50,
+                            child: LinearProgressIndicator(
+                              minHeight: 8,
+                              value: 1-getProgressBarPercentValue(reqYogurt),
+                              backgroundColor: Color(0xff66b3cc),
+                              valueColor:  AlwaysStoppedAnimation<Color>(Colors.blueGrey),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text("$reqYogurt"),
+                        )
+                      ],
                     ),
                     Row(
                       children: [

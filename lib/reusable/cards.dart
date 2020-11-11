@@ -151,22 +151,22 @@ class _OutletCardState extends State<OutletCard> {
     }
   }
 
-  Function getAmountPayFunction(){
-    return () async{
-        //TODO Invoke password confirmation and then perform sql fns
-      /*Navigator.push(context,
-      MaterialPageRoute(builder: (context)=> PasswordConfirm()));*/
-      final _returnedData= await showModalBottomSheet(context: context, builder:(context){
-        return PasswordConfirm();  //Temp testing
-      });
-      _inputPassword=_returnedData;
-      print(_inputPassword);  //This is temporary, we will do work with it
-      setState(() {
-        amountPayable=0;
-      });
-      
-    };
-  }
+  // Function getAmountPayFunction(){
+  //   return () async{
+  //
+  //     /*Navigator.push(context,
+  //     MaterialPageRoute(builder: (context)=> PasswordConfirm()));*/
+  //     final _returnedData= await showModalBottomSheet(context: context, builder:(context){
+  //       return PasswordConfirm();  //Temp testing
+  //     });
+  //     _inputPassword=_returnedData;
+  //     print(_inputPassword);  //This is temporary, we will do work with it
+  //     setState(() {
+  //       amountPayable=0;
+  //     });
+  //
+  //   };
+  // }
 
   @override
   void initState() {
@@ -234,13 +234,13 @@ class _OutletCardState extends State<OutletCard> {
                           child: Text(getDeliverStockText()),
                           onPressed: ((reqMilk+reqCheese+reqYogurt+reqButter)==0)?null:getDeliverStockFunction() ,
                         ),
-                        sizedBoxLargeInRow,
-                        FlatButton(
-                          color: Colors.blueAccent,
-                          textColor: Colors.white,
-                          child: Text(getAmountPayText()),
-                          onPressed: (amountPayable==0)?null:getAmountPayFunction(),
-                        ),
+                        // sizedBoxLargeInRow,
+                        // FlatButton(
+                        //   color: Colors.blueAccent,
+                        //   textColor: Colors.white,
+                        //   child: Text(getAmountPayText()),
+                        //   onPressed: (amountPayable==0)?null:getAmountPayFunction(),
+                        // ),
                       ],
                     )
                   ],

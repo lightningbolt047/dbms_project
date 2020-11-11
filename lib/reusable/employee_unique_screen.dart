@@ -84,7 +84,8 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 40
+                  fontSize: 40,
+                  fontFamily: screenHeadFont
                 ),
               )
             ),
@@ -114,6 +115,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                               Text(name,
                                 style: TextStyle(
                                   fontSize: 20,
+                                  fontFamily: screenContentFont
                                 ),
                               )
                               ],
@@ -130,6 +132,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 Text(id,
                                   style: TextStyle(
                                     fontSize: 20,
+                                    fontFamily: screenContentFont
                                   ),
                                 )
                               ],
@@ -145,7 +148,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 sizedBoxSmallInRow,
                                 Text(phoneNumber,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 20,fontFamily: screenContentFont
                                   ),
                                 )
                               ],
@@ -169,6 +172,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 sizedBoxSmallInRow,
                                 Text(dateOfJoin,
                                   style: TextStyle(
+                                    fontFamily: screenContentFont,
                                     fontSize: 20,
                                   ),
                                 )
@@ -185,6 +189,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 sizedBoxSmallInRow,
                                 Text("$salary",
                                   style: TextStyle(
+                                    fontFamily: screenContentFont,
                                     fontSize: 20,
                                   ),
                                 )
@@ -201,6 +206,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 sizedBoxSmallInRow,
                                 Text(job,
                                   style: TextStyle(
+                                    fontFamily: screenContentFont,
                                     fontSize: 20,
                                   ),
                                 )
@@ -225,6 +231,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 sizedBoxSmallInRow,
                                 Text(address,
                                   style: TextStyle(
+                                    fontFamily: screenContentFont,
                                     fontSize: 20,
                                   ),
                                 )
@@ -251,6 +258,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                     child: Text(getCreditSalaryButtonText(),
                                     style: TextStyle(
                                       fontSize: 20,
+                                      fontFamily: screenHeadFont,
                                     ),
                                     ),
                                     onPressed: (pageType==pageTypeList.employeeManager && amountPayable>0)?getCreditSalaryFunction():null ,
@@ -263,6 +271,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                     textColor: Colors.white,
                                     child: Text("Cancel",
                                       style: TextStyle(
+                                        fontFamily: screenHeadFont,
                                         fontSize: 20,
                                       ),
                                     ),

@@ -250,6 +250,7 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       );
     }
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
           title: Text(

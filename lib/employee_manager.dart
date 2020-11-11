@@ -53,6 +53,7 @@ class _EmployeeManagerScreenState extends State<EmployeeManagerScreen> {
       );
     }
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
           title: Text(

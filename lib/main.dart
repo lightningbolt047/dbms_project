@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Builder(
         builder:(context) => Scaffold(
           appBar: AppBar(
@@ -151,7 +152,7 @@ class _LoginState extends State<Login> {
                         //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.outletManager,_inputUsername)
+                            MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
                             )
                         );
                       }

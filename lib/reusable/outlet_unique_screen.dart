@@ -55,6 +55,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
       );
     }
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
           backgroundColor: Colors.lightBlue,
           floatingActionButton: FloatingActionButton(

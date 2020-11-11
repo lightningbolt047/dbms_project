@@ -1164,6 +1164,7 @@ class _AddDetailsState extends State<AddDetails> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -1187,6 +1188,7 @@ class _PasswordConfirmState extends State<PasswordConfirm> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
           title: Text(

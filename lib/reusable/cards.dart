@@ -126,7 +126,6 @@ class _OutletCardState extends State<OutletCard> {
         var response2=await server.getDecodedResponse();
         if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
           setState(() {
-            //TODO Perform Sql for delivery
             reqMilk-=orderMilk;
             reqCheese-=orderCheese;
             reqYogurt-=orderYogurt;

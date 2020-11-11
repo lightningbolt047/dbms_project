@@ -21,8 +21,36 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
   String _errorText="";
 
   double _reqMilk=0,_reqButter=0,_reqCheese=0,_reqYogurt=0;
+  bool populated=false;
+
+
+  Future<bool> populateData() async {
+    RequestServer server = RequestServer(
+        action: "SELECT * from Required  where outID=\"$outletID\"",
+        Qtype: "R");
+    var items = await server.getDecodedResponse();
+    setState(() {
+      _reqMilk = double.parse(items[0]['Milk']);
+      _reqButter = double.parse(items[0]['Butter']);
+      _reqCheese = double.parse(items[0]['Cheese']);
+      _reqYogurt = double.parse(items[0]['Yogurt']);
+      populated = true;
+    });
+  }
+
+   void initState(){
+     populateData();
+     super.initState();
+   }
+
+
   @override
   Widget build(BuildContext context) {
+     if(populated==false){
+       return Center(
+         child: CircularProgressIndicator(),
+       );
+     }
     return Container(
       color: Color(0xFF727272),
       child: Container(
@@ -45,19 +73,7 @@ class _RequestItemsSheetState extends State<RequestItemsSheet> {
                     fontWeight: FontWeight.w600,
                   ),),
                     RoundActionButton(child: Icon(FontAwesomeIcons.check,color:Colors.white),action: () async{
-                      RequestServer server=RequestServer(action: "SELECT * from Required  where outID=\"$outletID\"",Qtype: "R");
-                      var items=await server.getDecodedResponse();
-                      double _milk,_butter,_cheese,_yogurt;
-                      _milk=double.parse(items[0]['Milk']);
-                      _butter=double.parse(items[0]['Butter']);
-                      _cheese=double.parse(items[0]['Cheese']);
-                      _yogurt=double.parse(items[0]['Yogurt']);
-                      _milk+=_reqMilk;
-                      _butter+=_reqButter;
-                      _cheese+=_reqCheese;
-                      _yogurt+=_reqYogurt;
-                      server.setAction("UPDATE Required SET Milk=$_milk,Yogurt=$_yogurt,Cheese=$_cheese,Butter=$_butter where outID=\"$outletID\"");
-                      server.setQtype("W");
+                      RequestServer server=RequestServer(action:"UPDATE Required SET Milk=$_reqMilk,Yogurt=$_reqYogurt,Cheese=$_reqCheese,Butter=$_reqButter where outID=\"$outletID\"",Qtype: "W");
                       var response=await server.getDecodedResponse();
                       if(response.toString().compareTo("OK")!=0){
                         setState(() {

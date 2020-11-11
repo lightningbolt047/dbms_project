@@ -44,6 +44,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
         return PasswordConfirm();  //Temp testing
       });
       _inputPassword=_returnedData;
+      //TODO Invoke password validation and perform SQL queries
       setState(() {
         amountPayable=0;
       });

@@ -1167,6 +1167,17 @@ class _AddDetailsState extends State<AddDetails> {
       theme: ThemeData(fontFamily: screenHeadFont),
       home: Scaffold(
         appBar: AppBar(
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Icon(FontAwesomeIcons.powerOff,color: Colors.white,),
+              ),
+            )
+          ],
           title: Text(
             getAppBarText()
           ),

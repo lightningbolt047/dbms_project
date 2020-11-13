@@ -57,7 +57,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
       }
       RequestServer server=RequestServer();
       bool authState=await server.checkCredentials(username, _returnedData);
-      if(authState){//TODO Invoke password validation here
+      if(authState){
         RequestServer server=RequestServer(action: "select Amount from Expenses where onDate=\"${dates[date]}\"",Qtype: "R");
         var items=await server.getDecodedResponse();
         double curExpense=0;

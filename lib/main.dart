@@ -8,9 +8,10 @@ import 'package:dairymanagement/employee_manager.dart';
 import 'reusable/employee_unique_screen.dart';  //tis for check
 import 'reusable/const.dart'; //tis for check
 import 'reusable/outlet_unique_screen.dart';
+import 'dart:async';
 
 void main() {
-  runApp(Login());
+  runApp(MaterialApp(home: SplashScreen()));
 }
 
 class Login extends StatefulWidget {
@@ -46,7 +47,16 @@ class _LoginState extends State<Login> {
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Column(
-                          children: [],
+                          children: [
+                            Container(
+                              child: Hero(
+                                tag: 'logo',
+                                child: Image.asset('assets/MilkLogoSplash.jpg',
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height-40,),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -175,7 +185,7 @@ class _LoginState extends State<Login> {
                                   //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
+                                      MaterialPageRoute(builder: (context) => OutletUniqueScreen("013")
                                       )
                                   );
                                 }
@@ -198,6 +208,56 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>{
+
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(
+        Duration(seconds: 5),
+            () async=> Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => Login())));
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Builder(
+        builder: (context)=>Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Column(
+              children: [
+                Hero(
+                  tag: 'logo',
+                  child: Image.asset('assets/MilkLogoSplash.jpg',height: MediaQuery.of(context).size.height-20,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(200, 2, 200, 0),
+                  child: LinearProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+                    backgroundColor: Colors.lightBlueAccent,
+                    minHeight: 10,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      )
     );
   }
 }

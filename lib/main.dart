@@ -121,81 +121,72 @@ class _LoginState extends State<Login> {
                             bool correctCredentials=await server.checkCredentials(_inputUsername, _inputPassword);
                             var response=await server.getDecodedResponse();
                             setState(() {
-                              // else{   //AB testing else from this point
-                              //   if(userPresent){
-                              //     if(correctCredentials){
-                              //       String usertype=response[0]['usertype'];
-                              //       String ID=response[0]['ID'];
-                              //       if(usertype=="employee"){
-                              //         Navigator.push(
-                              //                     context,
-                              //                     MaterialPageRoute(builder: (context) => EmployeeUniqueScreen(_inputUsername,ID,pageTypeList.employee)
-                              //                     )
-                              //                 );
-                              //       }
-                              //       else if(usertype=="outlet"){
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(builder: (context) => OutletUniqueScreen(ID)
-                              //             )
-                              //         );
-                              //       }
-                              //       else if(usertype=="employeemanager"){
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
-                              //             )
-                              //         );
-                              //       }
-                              //       else if(usertype=="outletmanager"){
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.outletManager,_inputUsername)
-                              //             )
-                              //         );
-                              //       }
-                              //       else if(usertype=="procurementmanager"){
-                              //         Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.procurementManager,_inputUsername)
-                              //             )
-                              //         );
-                              //       }
-                              //     }
-                              //     else{
-                              //       evalStatus=userEvalStatusTypes.wrongCredentials;
-                              //     }
-                              //   }
-                              //   else{
-                              //     evalStatus=userEvalStatusTypes.userDNE;
-                              //   }
-                              // }
-
-//The above code is actually the one we must use but its commented because, the DB is just not ready yet
-
-
-
-
-
-
-
-                              if(_inputUsername=='sas047' /*Dummy condition, irl, we'll check if _inputUsername exists in the table*/){
-                                if(_inputUsername=='sas047' && _inputPassword=='hello' /*Dummy condition! IRL, we'll check if _inputUsername matches _inputPassword*/){
-                                  evalStatus=userEvalStatusTypes.evalSuccess;
-                                  //Below is a dummy call for a new activity. IRL, use if-else to determine activity type for corresponding usertype
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => OutletUniqueScreen("013")
-                                      )
-                                  );
+                                //AB testing else from this point
+                                if(userPresent){
+                                  if(correctCredentials){
+                                    String usertype=response[0]['usertype'];
+                                    String ID=response[0]['ID'];
+                                    if(usertype=="employee"){
+                                      Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => EmployeeUniqueScreen(_inputUsername,ID,pageTypeList.employee)
+                                                  )
+                                              );
+                                    }
+                                    else if(usertype=="outlet"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => OutletUniqueScreen(ID)
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="employeemanager"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => EmployeeManagerScreen(_inputUsername)
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="outletmanager"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.outletManager,_inputUsername)
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="procurementmanager"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.procurementManager,_inputUsername)
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="transportmanager"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.transportManager,_inputUsername)
+                                          )
+                                      );
+                                    }
+                                  }
+                                  else{
+                                    evalStatus=userEvalStatusTypes.wrongCredentials;
+                                  }
                                 }
                                 else{
-                                  evalStatus=userEvalStatusTypes.wrongCredentials;
+                                  evalStatus=userEvalStatusTypes.userDNE;
                                 }
-                              }
-                              else{
-                                evalStatus=userEvalStatusTypes.userDNE;
-                              }
+
+
+//The above code is actually the one we must use but its commented. Reason: The DB is just not ready yet
+
+
+
+
+
+
+
+
                             });
                           },evalStatus),
                         ],

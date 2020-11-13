@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dairymanagement/reusable/add_new_details.dart';
 import 'package:dairymanagement/reusable/employee_unique_screen.dart';
 import 'package:flutter/material.dart';
@@ -47,9 +49,24 @@ class _OutletCardState extends State<OutletCard> {
     return true;
   }
 
+  bool authorized=true;
+
+
+  Color getDeliverStockButtonColor(){
+    if(authorized==false){
+      return Colors.red;
+    }
+    else{
+      return Colors.blueAccent;
+    }
+  }
+
   String getDeliverStockText(){
     if((reqMilk+reqCheese+reqYogurt+reqButter)==0){
       return "Stocks Delivered";
+    }
+    if(authorized==false){
+      return "You are not authorized";
     }
     else{
       return "Deliver Stocks";
@@ -58,96 +75,123 @@ class _OutletCardState extends State<OutletCard> {
 
   Function getDeliverStockFunction(){
       return () async{
-        RequestServer server=RequestServer(action: "select * from CurrentAvailability where onDate=\"${dates[date]}\"",Qtype: "R");
-        var items= await server.getDecodedResponse();
-        double curMilk,curButter,curCheese,curYogurt;
-        curMilk=double.parse(items[0]['Milk']);
-        curButter=double.parse(items[0]['Butter']);
-        curCheese=double.parse(items[0]['Cheese']);
-        curYogurt=double.parse(items[0]['Yogurt']);
-
-        double orderMilk,orderButter,orderCheese,orderYogurt;
-
-        if(curMilk<reqMilk){
-          orderMilk=curMilk;
-        }
-        else{
-          orderMilk=reqMilk;
-        }
-
-        if(curButter<reqButter){
-          orderButter=curButter;
-        }
-        else{
-          orderButter=reqButter;
-        }
-
-        if(curCheese<reqCheese){
-          orderCheese=curCheese;
-        }
-        else{
-          orderCheese=reqCheese;
-        }
-
-        if(curYogurt<reqYogurt){
-          orderYogurt=curYogurt;
-        }
-        else{
-          orderYogurt=reqYogurt;
-        }
-        curMilk-=orderMilk;
-        curButter-=orderButter;
-        curCheese-=orderCheese;
-        curYogurt-=orderYogurt;
-
-        server.setAction("UPDATE CurrentAvailability SET Milk=$curMilk,Yogurt=$curYogurt,Cheese=$curCheese,Butter=$curButter where onDate=\"${dates[date]}\"");
-        server.setQtype("W");
-        var response=await server.getDecodedResponse();
-
-        server.setAction("select * from Available where outID=\"$outletID\"");
-        server.setQtype("R");
-
-        var items1=await server.getDecodedResponse();
-
-        double availMilk,availButter,availYogurt,availCheese;
-        availMilk=double.parse(items1[0]['Milk']);
-        availButter=double.parse(items1[0]['Butter']);
-        availCheese=double.parse(items1[0]['Cheese']);
-        availYogurt=double.parse(items1[0]['Yogurt']);
-
-        availMilk+=orderMilk;
-        availButter+=orderButter;
-        availCheese+=orderCheese;
-        availYogurt+=orderYogurt;
-
-        server.setAction("UPDATE Available SET Milk=$availMilk,Yogurt=$availYogurt,Cheese=$availCheese,Butter=$availButter where outID=\"$outletID\"");
-        server.setQtype("W");
-        var response1=await server.getDecodedResponse();
-        server.setAction("select * from Required where outID=\"$outletID\"");
-        server.setQtype("R");
-        var items2=await server.getDecodedResponse();
-        double curReqMilk,curReqButter,curReqCheese,curReqYogurt;
-        curReqMilk=double.parse(items2[0]['Milk'])-orderMilk;
-        curReqButter=double.parse(items2[0]['Butter'])-orderButter;
-        curReqCheese=double.parse(items2[0]['Cheese'])-orderCheese;
-        curReqYogurt=double.parse(items2[0]['Yogurt'])-orderYogurt;
-        server.setAction("UPDATE Required SET Milk=$curReqMilk,Yogurt=$curReqYogurt,Cheese=$curReqCheese,Butter=$curReqButter where outID=\"$outletID\"");
-        server.setQtype("W");
-        var response2=await server.getDecodedResponse();
-        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+        final _returnedData= await showModalBottomSheet(context: context, builder:(context){
+          return PasswordConfirm();  //Temp testing
+        });
+        if(_returnedData==null){
           setState(() {
-            reqMilk-=orderMilk;
-            reqCheese-=orderCheese;
-            reqYogurt-=orderYogurt;
-            reqButter-=orderButter;
-            print("Stocks Delivered");
-            populated=false;
+            authorized=false;
           });
-          populateData();
-          updateParentState();
+          Timer(const Duration(seconds: 10),(){
+            setState(() {
+              authorized=true;
+            });
+          });
+        }
+        RequestServer server=RequestServer();
+        bool authStatus=await server.checkCredentials(username, _returnedData);
+        if(authStatus){
+          RequestServer server=RequestServer(action: "select * from CurrentAvailability where onDate=\"${dates[date]}\"",Qtype: "R");
+          var items= await server.getDecodedResponse();
+          double curMilk,curButter,curCheese,curYogurt;
+          curMilk=double.parse(items[0]['Milk']);
+          curButter=double.parse(items[0]['Butter']);
+          curCheese=double.parse(items[0]['Cheese']);
+          curYogurt=double.parse(items[0]['Yogurt']);
+
+          double orderMilk,orderButter,orderCheese,orderYogurt;
+
+          if(curMilk<reqMilk){
+            orderMilk=curMilk;
+          }
+          else{
+            orderMilk=reqMilk;
+          }
+
+          if(curButter<reqButter){
+            orderButter=curButter;
+          }
+          else{
+            orderButter=reqButter;
+          }
+
+          if(curCheese<reqCheese){
+            orderCheese=curCheese;
+          }
+          else{
+            orderCheese=reqCheese;
+          }
+
+          if(curYogurt<reqYogurt){
+            orderYogurt=curYogurt;
+          }
+          else{
+            orderYogurt=reqYogurt;
+          }
+          curMilk-=orderMilk;
+          curButter-=orderButter;
+          curCheese-=orderCheese;
+          curYogurt-=orderYogurt;
+
+          server.setAction("UPDATE CurrentAvailability SET Milk=$curMilk,Yogurt=$curYogurt,Cheese=$curCheese,Butter=$curButter where onDate=\"${dates[date]}\"");
+          server.setQtype("W");
+          var response=await server.getDecodedResponse();
+
+          server.setAction("select * from Available where outID=\"$outletID\"");
+          server.setQtype("R");
+
+          var items1=await server.getDecodedResponse();
+
+          double availMilk,availButter,availYogurt,availCheese;
+          availMilk=double.parse(items1[0]['Milk']);
+          availButter=double.parse(items1[0]['Butter']);
+          availCheese=double.parse(items1[0]['Cheese']);
+          availYogurt=double.parse(items1[0]['Yogurt']);
+
+          availMilk+=orderMilk;
+          availButter+=orderButter;
+          availCheese+=orderCheese;
+          availYogurt+=orderYogurt;
+
+          server.setAction("UPDATE Available SET Milk=$availMilk,Yogurt=$availYogurt,Cheese=$availCheese,Butter=$availButter where outID=\"$outletID\"");
+          server.setQtype("W");
+          var response1=await server.getDecodedResponse();
+          server.setAction("select * from Required where outID=\"$outletID\"");
+          server.setQtype("R");
+          var items2=await server.getDecodedResponse();
+          double curReqMilk,curReqButter,curReqCheese,curReqYogurt;
+          curReqMilk=double.parse(items2[0]['Milk'])-orderMilk;
+          curReqButter=double.parse(items2[0]['Butter'])-orderButter;
+          curReqCheese=double.parse(items2[0]['Cheese'])-orderCheese;
+          curReqYogurt=double.parse(items2[0]['Yogurt'])-orderYogurt;
+          server.setAction("UPDATE Required SET Milk=$curReqMilk,Yogurt=$curReqYogurt,Cheese=$curReqCheese,Butter=$curReqButter where outID=\"$outletID\"");
+          server.setQtype("W");
+          var response2=await server.getDecodedResponse();
+          if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+            setState(() {
+              reqMilk-=orderMilk;
+              reqCheese-=orderCheese;
+              reqYogurt-=orderYogurt;
+              reqButter-=orderButter;
+              print("Stocks Delivered");
+              populated=false;
+            });
+            populateData();
+            updateParentState();
+          }
+          else{
+            print(response.toString());
+          }
         }
         else{
-          print(response.toString());
+          setState(() {
+            authorized=false;
+          });
+          Timer(const Duration(seconds: 10),(){
+            setState(() {
+              authorized=true;
+            });
+          });
         }
       };
   }
@@ -325,7 +369,7 @@ class _OutletCardState extends State<OutletCard> {
                     Row(
                       children: [
                         FlatButton(
-                          color: Colors.blueAccent,
+                          color: getDeliverStockButtonColor(),
                           textColor: Colors.white,
                           child: Text(getDeliverStockText()),
                           onPressed: ((reqMilk+reqCheese+reqYogurt+reqButter)==0)?null:getDeliverStockFunction() ,
@@ -408,7 +452,8 @@ class MilkProducerCard extends StatefulWidget {
 class _MilkProducerCardState extends State<MilkProducerCard> {
   String username="",name="",producerID="",area="",phoneNumber="";
   double amountPayable=0,getMilk=0,givenMilk;
-  String _inputPassword;
+
+  bool authorized=true;
 
   _MilkProducerCardState(this.username,this.producerID);
 
@@ -434,8 +479,19 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
       final _returnedData= await showModalBottomSheet(context: context, builder:(context){
         return PasswordConfirm();  //Temp testing
       });
-      _inputPassword=_returnedData;
-      if(true){ //TODO password validation call as the if condition
+      if(_returnedData==null){
+        setState(() {
+          authorized=false;
+        });
+        Timer(const Duration(seconds: 10),(){
+          setState(() {
+            authorized=true;
+          });
+        });
+      }
+      RequestServer server=RequestServer();
+      bool authStatus=await server.checkCredentials(username, _returnedData);
+      if(authStatus){ //TODO password validation call as the if condition
         RequestServer server=RequestServer(action: "UPDATE Expenses SET Amount+=$amountPayable where onDate=\"${dates[date]}\"",Qtype: "W");
         var response=await server.getDecodedResponse();
         server.setAction("UPDATE NetAmount SET Expense+=$amountPayable where onDate=\"${dates[date]}\"");
@@ -449,7 +505,16 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
             amountPayable=0;
           });
         }
-
+      }
+      else{
+        setState(() {
+          authorized=false;
+        });
+        Timer(const Duration(seconds: 10),(){
+          setState(() {
+            authorized=true;
+          });
+        });
       }
     };
   }
@@ -458,8 +523,20 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
     if(amountPayable==0){
       return "Amount Paid";
     }
+    if(authorized==false){
+      return "You are not Authorized";
+    }
     else{
       return "Pay Producer: $amountPayable";
+    }
+  }
+
+  Color getAmountPayButtonColor(){
+    if(authorized){
+      return Colors.blueAccent;
+    }
+    else{
+      return Colors.red;
     }
   }
 
@@ -584,7 +661,7 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                   ),
                   sizedBoxLargeInRow,
                   FlatButton(
-                    color: Colors.blueAccent,
+                    color: getAmountPayButtonColor(),
                     textColor: Colors.white,
                     child: Text(getAmountPayButtonText()),
                     onPressed: (amountPayable!=0)?getAmountPayFunction():null,

@@ -23,7 +23,7 @@ class RequestServer{
   }
 
   Future checkCredentials(String username, String password) async{
-    this.action="select * from UserTable where username=$username";
+    this.action="select * from UserTable where username=\"$username\"";
     this.Qtype="R";
     var response= await getDecodedResponse();
 
@@ -42,11 +42,10 @@ class RequestServer{
   }
 
   Future checkUserPresence(String username) async{
-    this.action="select username from UserTable where username=$username";
+    this.action="select username from UserTable where username=\"$username\"";
     this.Qtype="R";
     // var response= await getDecodedResponse();
     http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
-    print("response body is: "+jsonDecode(response.body));
     if(jsonDecode(response.body)=="Empty"){
       return false;
     }

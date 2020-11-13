@@ -5,6 +5,7 @@ import 'request_server.dart';
 import 'const.dart';
 import 'add_new_details.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class EmployeeUniqueScreen extends StatefulWidget {
   String username,id;
@@ -21,6 +22,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
   var pageType;
   String _inputPassword;
 
+  bool authorized=true;
   _EmployeeUniqueScreenState(this.username,this.id,this.pageType);
 
   Future<bool> populateData() async{
@@ -43,8 +45,19 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
       final _returnedData= await showModalBottomSheet(context: context, builder:(context){
         return PasswordConfirm();  //Temp testing
       });
-      _inputPassword=_returnedData;
-      if(true){//TODO Invoke password validation here
+      if(_returnedData==null){
+        setState(() {
+          authorized=false;
+        });
+        Timer(const Duration(seconds: 10),(){
+          setState(() {
+            authorized=true;
+          });
+        });
+      }
+      RequestServer server=RequestServer();
+      bool authState=await server.checkCredentials(username, _returnedData);
+      if(authState){//TODO Invoke password validation here
         RequestServer server=RequestServer(action: "select Amount from Expenses where onDate=\"${dates[date]}\"",Qtype: "R");
         var items=await server.getDecodedResponse();
         double curExpense=0;
@@ -60,6 +73,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
         if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
           setState(() {
             amountPayable=0;
+            authorized=true;
           });
           return;
         }
@@ -68,12 +82,34 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
         print(response1.toString());
         print(response2.toString());
       }
+      else{
+        setState(() {
+          authorized=false;
+        });
+        Timer(const Duration(seconds: 10),(){
+          setState(() {
+            authorized=true;
+          });
+        });
+      }
     };
+  }
+
+  Color getCreditSalaryButtonColor(){
+    if(authorized==true){
+      return Colors.blueAccent;
+    }
+    else{
+      return Colors.red;
+    }
   }
 
   String getCreditSalaryButtonText(){
     if(amountPayable==0){
       return "Salary Credited";
+    }
+    if(authorized==false){
+      return "You are not authorized";
     }
     else{
       return 'Credit Salary: $amountPayable';
@@ -274,7 +310,7 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(0,0,5,0),
                                   child: FlatButton(
-                                    color: Colors.blueAccent,
+                                    color: getCreditSalaryButtonColor(),
                                     textColor: Colors.white,
                                     child: Text(getCreditSalaryButtonText(),
                                     style: TextStyle(

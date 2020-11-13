@@ -25,6 +25,7 @@ class _LoginState extends State<Login> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -111,7 +112,7 @@ class _LoginState extends State<Login> {
                             RequestServer server= RequestServer();
                             server.setAction("select usertype,ID from UserTable where username=$_inputUsername");
                             server.setQtype("R");
-                            if(_inputUsername==null || _inputPassword==null){
+                            if(_inputUsername==null || _inputUsername=="" || _inputPassword==null || _inputPassword==""){
                               setState(() {
                                 evalStatus=userEvalStatusTypes.missingCredentials;
                               });
@@ -165,6 +166,20 @@ class _LoginState extends State<Login> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => MultiManagerScreen(pageTypeList.transportManager,_inputUsername)
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="admin"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => AdminPage()
+                                          )
+                                      );
+                                    }
+                                    else if(usertype=="financemanager"){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => FinanceManagerScreen()
                                           )
                                       );
                                     }

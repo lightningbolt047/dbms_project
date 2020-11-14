@@ -3,15 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'request_server.dart';
 import 'const.dart';
 import 'package:flutter/material.dart';
-import 'package:dairymanagement/reusable/add_new_details.dart';
-import 'dart:async';
 
 class OutletUniqueScreen extends StatefulWidget {
   String outletID;
-  String username;
-  OutletUniqueScreen(this.outletID,this.username);
+  OutletUniqueScreen(this.outletID);
   @override
-  _OutletUniqueScreenState createState() => _OutletUniqueScreenState(this.outletID,this.username);
+  _OutletUniqueScreenState createState() => _OutletUniqueScreenState(this.outletID);
 }
 
 class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
@@ -19,12 +16,11 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
   double _singleSessionIncome=0,totalIncome=0,amountPayable=0;
   String outletID="",outletName="",phoneNumber="",area="";
   double availMilk=0,availButter=0,availCheese=0,availYogurt=0;
-  String username;
+
   double saleMilk=0,saleButter=0,saleCheese=0,saleYogurt=0;
   bool populated=false;
-  bool authorized=true;
 
-  _OutletUniqueScreenState(this.outletID,this.username);
+  _OutletUniqueScreenState(this.outletID);
 
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select * from Outlets,Available where Outlets.outID=Available.outID and Outlets.outID=$outletID;", Qtype: "R");
@@ -44,21 +40,9 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
     return true;
   }
 
-  Color getAmountPayButtonColor(){
-    if(authorized==true){
-      return Colors.lightBlue;
-    }
-    else{
-      return Colors.red;
-    }
-  }
-
   String getAmountPayButtonText(){
     if(amountPayable==0){
       return "No Outstanding Payments";
-    }
-    if(authorized==false){
-      return "You are not authorized";
     }
     else{
       return "Pay Outstanding Amount to Company: $amountPayable";
@@ -67,6 +51,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
 
   Function getAmountPayButtonFunction(){
     return () async{
+<<<<<<< HEAD
       final _returnedData= await showModalBottomSheet(context: context, builder:(context){
         return PasswordConfirm();  //Temp testing
       });
@@ -93,37 +78,39 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
         server.setAction("UPDATE Income SET Amount=$amount,Tax=Amount*$tax,NetAmount=Amount-Tax where onDate=\"${dates[date]}\"");
         server.setQtype("W");
         var response=await server.getDecodedResponse();
+=======
+      RequestServer server=RequestServer(action: "select Amount from Income where onDate=\"${dates[date]}\"",Qtype: "R");
+      var items=await server.getDecodedResponse();
+      totalIncome+=amountPayable;
+      double amount;
+      amount=double.parse(items[0]['Amount']);
+      amount+=amountPayable;
+      server.setAction("UPDATE Income SET Amount=$amount,Tax=Amount*$tax,NetAmount=Amount-Tax where onDate=\"${dates[date]}\"");
+      server.setQtype("W");
+      var response=await server.getDecodedResponse();
+>>>>>>> parent of ef5d460... Fixed payment in OutletUniqueScreen;
 
-        server.setAction("select NetAmount from Income where onDate=\"${dates[date]}\"");
-        server.setQtype("R");
-        var items1=await server.getDecodedResponse();
+      server.setAction("select NetAmount from Income where onDate=\"${dates[date]}\"");
+      server.setQtype("R");
+      var items1=await server.getDecodedResponse();
 
-        double netAmount=double.parse(items1[0]['NetAmount']);
+      double netAmount=double.parse(items1[0]['NetAmount']);
 
-        server.setAction("UPDATE NetAmount SET Income=$netAmount,Profit=Income-Expense where onDate=\"${dates[date]}\"");
-        server.setQtype("W");
-        var response1=await server.getDecodedResponse();
+      server.setAction("select Income from NetAmount where onDate=\"${dates[date]}\"");
+      var items2=await server.getDecodedResponse();
+      double income=double.parse(items2[0]['Income']);
+      server.setAction("UPDATE NetAmount SET Income=$netAmount,Profit=Income-Expense where onDate=\"${dates[date]}\"");
+      server.setQtype("W");
+      var response1=await server.getDecodedResponse();
 
-        server.setAction("UPDATE Outlets SET TotalIncome=$totalIncome,AmountPayable=0 where outID=\"$outletID\"");
-        server.setQtype("W");
+      server.setAction("UPDATE Outlets SET TotalIncome=$totalIncome,AmountPayable=0 where outID=\"$outletID\"");
+      server.setQtype("W");
 
-        var response2=await server.getDecodedResponse();
+      var response2=await server.getDecodedResponse();
 
-        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
-          setState(() {
-            amountPayable=0;
-            authorized=true;
-          });
-        }
-      }
-      else{
+      if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
         setState(() {
-          authorized=false;
-        });
-        Timer(const Duration(seconds: 10),(){
-          setState(() {
-            authorized=true;
-          });
+          amountPayable=0;
         });
       }
     };
@@ -474,7 +461,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(5,0,0,0),
                                     child: FlatButton(
-                                      color: getAmountPayButtonColor(),
+                                      color: Colors.lightBlue,
                                       textColor: Colors.white,
                                       child: Text(getAmountPayButtonText(),
                                         style: TextStyle(

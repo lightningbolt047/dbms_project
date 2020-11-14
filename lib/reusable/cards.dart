@@ -11,8 +11,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 
 class OutletCard extends StatefulWidget {
-  final String username,outletID;
-  final Function updateParentState;
+  String username,outletID;
+  Function updateParentState;
   OutletCard(this.username,this.outletID,this.updateParentState);
   @override
   _OutletCardState createState() => _OutletCardState(this.username,this.outletID,this.updateParentState);

@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
                                     else if(usertype=="outlet"){
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => OutletUniqueScreen(ID,_inputUsername)
+                                          MaterialPageRoute(builder: (context) => OutletUniqueScreen(ID)
                                           )
                                       );
                                     }

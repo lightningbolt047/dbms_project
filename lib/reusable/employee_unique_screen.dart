@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class EmployeeUniqueScreen extends StatefulWidget {
-  final String username,id;
-  final pageType;
+  String username,id;
+  var pageType;
   EmployeeUniqueScreen(this.username,this.id,this.pageType);
   @override
   _EmployeeUniqueScreenState createState() => _EmployeeUniqueScreenState(this.username,this.id,this.pageType);
@@ -54,11 +54,10 @@ class _EmployeeUniqueScreenState extends State<EmployeeUniqueScreen> {
             authorized=true;
           });
         });
-        return;
       }
       RequestServer server=RequestServer();
       bool authState=await server.checkCredentials(username, _returnedData);
-      if(authState){//TODO Invoke password validation here
+      if(authState){
         RequestServer server=RequestServer(action: "select Amount from Expenses where onDate=\"${dates[date]}\"",Qtype: "R");
         var items=await server.getDecodedResponse();
         double curExpense=0;

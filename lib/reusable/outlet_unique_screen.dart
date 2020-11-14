@@ -79,6 +79,7 @@ class _OutletUniqueScreenState extends State<OutletUniqueScreen> {
             authorized=true;
           });
         });
+        return;
       }
       RequestServer server=RequestServer();
       bool authState=await server.checkCredentials(username, _returnedData);

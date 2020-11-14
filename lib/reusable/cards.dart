@@ -87,6 +87,7 @@ class _OutletCardState extends State<OutletCard> {
               authorized=true;
             });
           });
+          return;
         }
         RequestServer server=RequestServer();
         bool authStatus=await server.checkCredentials(username, _returnedData);
@@ -442,7 +443,7 @@ class EmployeeCard extends StatelessWidget {
 
 class MilkProducerCard extends StatefulWidget {
 
-  String username,producerID;
+  final String username,producerID;
 
   MilkProducerCard(this.username,this.producerID);
   @override
@@ -488,10 +489,11 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
             authorized=true;
           });
         });
+        return;
       }
       RequestServer server=RequestServer();
       bool authStatus=await server.checkCredentials(username, _returnedData);
-      if(authStatus){ //TODO password validation call as the if condition
+      if(authStatus){
         RequestServer server=RequestServer(action: "UPDATE Expenses SET Amount+=$amountPayable where onDate=\"${dates[date]}\"",Qtype: "W");
         var response=await server.getDecodedResponse();
         server.setAction("UPDATE NetAmount SET Expense+=$amountPayable where onDate=\"${dates[date]}\"");
@@ -500,7 +502,7 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
         var response2=await server.getDecodedResponse();
         server.setAction("UPDATE MilkProducer SET AmountPayable=0 where ProducerID=\"$producerID\"");
         var response3=await server.getDecodedResponse();
-        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0){
+        if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0 && response2.toString().compareTo("OK")==0 && response3.toString().compareTo("OK")==0){
           setState(() {
             amountPayable=0;
           });

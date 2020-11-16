@@ -14,8 +14,8 @@ enum pageTypeList{
   financeManager
 }
 
-List dates=["2020-10-08","2020-10-09","2020-10-10","2020-10-11","2020-10-12","2020-10-13","2020-10-14"];
-var date=1;
+List dates=["2020-11-13","2020-11-14","2020-11-15","2020-11-16","2020-11-17","2020-11-18","2020-11-19","2020-11-20","2020-11-21","2020-11-22"];
+var date=2;
 
 String screenHeadFont='Acme';
 String screenContentFont='Sriracha';

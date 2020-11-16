@@ -7,7 +7,6 @@ import 'package:http/http.dart';
 import 'const.dart';
 import 'request_server.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 
 class OutletCard extends StatefulWidget {

@@ -42,7 +42,7 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
   Future<dynamic> getFromServer() async{
     if (pageType == pageTypeList.outletManager) {
       RequestServer server = RequestServer(
-          action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID;",
+          action: "select Outlets.outID,Outlet_name,PhoneNumber,TotalIncome,AmountPayable,Area,Available.Milk,Available.Yogurt,Available.Cheese,Available.Butter,Required.Milk as ReqMilk,Required.Yogurt as ReqYogurt,Required.Cheese as ReqCheese,Required.Butter as ReqButter from Outlets,Available,Required where Outlets.outID=Available.outID and Outlets.outID=Required.outID order by Outlets.outID;",
           Qtype: "R");
       items = await server.getDecodedResponse();
       server.setAction("select * from CurrentAvailability where onDate=\"${dates[date]}\"");

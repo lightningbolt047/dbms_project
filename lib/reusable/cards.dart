@@ -685,17 +685,21 @@ class Transport extends StatefulWidget {
 class _TransportState extends State<Transport> {
   String truckID="",area="";
   String numberPlate="",empID="";
+  String empName="";
   _TransportState(this.truckID);
 
 
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select Transport.TruckID,NumberPlate,EmpID,Area from Truck,Transport where Transport.TruckID=$truckID and Transport.TruckID=Truck.TruckID;", Qtype: "R");
     var items= await server.getDecodedResponse();
+    server.setAction("select Name from Employees where EmpID=\"${items[0]["EmpID"].toString()}\"");
+    var items1=await server.getDecodedResponse();
     if(mounted){
       setState(() {
         numberPlate=items[0]["NumberPlate"];
         empID=items[0]["EmpID"];
         area=items[0]["Area"];
+        empName=items1[0]["Name"];
       });
     }
     return true;
@@ -748,7 +752,7 @@ class _TransportState extends State<Transport> {
                     sizedBoxLargeInRow,
                     idIcon,
                     sizedBoxSmallInRow,
-                    Text(empID),
+                    Text("$empID, $empName"),
                   ],
                 ),
               ],

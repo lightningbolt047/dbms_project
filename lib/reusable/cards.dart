@@ -442,19 +442,20 @@ class EmployeeCard extends StatelessWidget {
 class MilkProducerCard extends StatefulWidget {
 
   String username,producerID;
+  Function updateParentState;
 
-  MilkProducerCard(this.username,this.producerID);
+  MilkProducerCard(this.username,this.producerID,this.updateParentState);
   @override
-  _MilkProducerCardState createState() => _MilkProducerCardState(this.username,this.producerID);
+  _MilkProducerCardState createState() => _MilkProducerCardState(this.username,this.producerID,this.updateParentState);
 }
 
 class _MilkProducerCardState extends State<MilkProducerCard> {
   String username="",name="",producerID="",area="",phoneNumber="";
   double amountPayable=0,getMilk=0,givenMilk;
-
+  Function updateParentState;
   bool authorized=true;
 
-  _MilkProducerCardState(this.username,this.producerID);
+  _MilkProducerCardState(this.username,this.producerID,this.updateParentState);
 
   Future<bool> populateData() async{
     RequestServer server = RequestServer(action: "select * from MilkProducer where ProducerID=$producerID", Qtype: "R");
@@ -644,8 +645,15 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                       double milk2butter=getMilk*(double.parse(items1[1]['QtyProduced']));
                       double milk2cheese=getMilk*(double.parse(items1[2]['QtyProduced']));
                       double milk2yogurt=getMilk*(double.parse(items1[3]['QtyProduced']));
+
+                      server.setAction("select * from CurrentAvailability where onDate=\"${dates[date]}\"");
+                      var items2=await server.getDecodedResponse();
+                      double updatedMilk=(double.parse(items2[0]['Milk']))+milk2milk;
+                      double updatedButter=(double.parse(items2[0]['Butter']))+milk2butter;
+                      double updatedCheese=(double.parse(items2[0]['Cheese']))+milk2cheese;
+                      double updatedYogurt=(double.parse(items2[0]['Yogurt']))+milk2yogurt;
                       
-                      server.setAction("UPDATE CurrentAvailability SET Milk=$milk2milk,Yogurt=$milk2yogurt,Cheese=$milk2cheese,Butter=$milk2butter where onDate=\"${dates[date]}\"");
+                      server.setAction("UPDATE CurrentAvailability SET Milk=$updatedMilk,Yogurt=$updatedYogurt,Cheese=$updatedCheese,Butter=$updatedButter where onDate=\"${dates[date]}\"");
                       server.setQtype("W");
                       var response1=await server.getDecodedResponse();
                       if(response.toString().compareTo("OK")==0 && response1.toString().compareTo("OK")==0){
@@ -654,6 +662,7 @@ class _MilkProducerCardState extends State<MilkProducerCard> {
                           getMilk=0;
                           print("Update success");
                         });
+                        updateParentState();
                         return;
                       }
                     } ,

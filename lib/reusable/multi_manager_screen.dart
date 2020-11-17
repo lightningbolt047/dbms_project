@@ -52,6 +52,8 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       RequestServer server = RequestServer(
           action: "select ProducerID from MilkProducer", Qtype: "R");
       items = await server.getDecodedResponse();
+      server.setAction("select * from CurrentAvailability where onDate=\"${dates[date]}\"");
+      items1=await server.getDecodedResponse();
     }
     else if (pageType == pageTypeList.transportManager) {
       RequestServer server = RequestServer(
@@ -74,6 +76,12 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
 
   void updateStateFromChild() async{
     if(pageType==pageTypeList.outletManager){
+      setState(() {
+        populated=false;
+      });
+      await getFromServer();
+    }
+    if(pageType==pageTypeList.procurementManager){
       setState(() {
         populated=false;
       });
@@ -185,8 +193,100 @@ class _MultiManagerScreenState extends State<MultiManagerScreen> {
       }
     }
     else if (pageType == pageTypeList.procurementManager) {
+      availMilk=double.parse(items1[0]["Milk"]);
+      availButter=double.parse(items1[0]["Butter"]);
+      availCheese=double.parse(items1[0]["Cheese"]);
+      availYogurt=double.parse(items1[0]["Yogurt"]);
+      _cards.add(Padding(
+        padding: EdgeInsets.all(8),
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Availability",style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+              ),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 80,
+                          animation: true,
+                          animationDuration: 2000,
+                          lineWidth: 5,
+                          percent: getProgressBarPercent(availMilk),
+                          center: Text("$availMilk"),
+                          progressColor: Colors.blueAccent,
+                        ),
+                        Text("Milk")
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 80,
+                          animation: true,
+                          animationDuration: 2000,
+                          lineWidth: 5,
+                          percent: getProgressBarPercent(availButter),
+                          center: Text("$availButter"),
+                          progressColor: Colors.yellow,
+                        ),
+                        Text("Butter")
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 80,
+                          animation: true,
+                          animationDuration: 2000,
+                          lineWidth: 5,
+                          percent: getProgressBarPercent(availCheese),
+                          center: Text("$availCheese"),
+                          progressColor: Colors.lightGreenAccent,
+                        ),
+                        Text("Cheese")
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        CircularPercentIndicator(
+                          radius: 80,
+                          animation: true,
+                          animationDuration: 2000,
+                          lineWidth: 5,
+                          percent: getProgressBarPercent(availYogurt),
+                          center: Text("$availYogurt"),
+                          progressColor: Colors.blueGrey,
+                        ),
+                        Text("Yogurt")
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ));
       for (int i = 0; i < items.length; i++) {
-        _cards.add(MilkProducerCard(username, items[i]["ProducerID"]));
+        _cards.add(MilkProducerCard(username,items[i]["ProducerID"],updateStateFromChild));
       }
     }
     else if (pageType == pageTypeList.transportManager) {

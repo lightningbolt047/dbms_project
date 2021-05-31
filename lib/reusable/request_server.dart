@@ -13,7 +13,7 @@ class RequestServer{
 
   var response;
   Future getDecodedResponse() async{
-    http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
+    http.Response response= await http.get(Uri.parse("http://localhost/index.php?action=${action}&Qtype=${Qtype}"));
     if(response.statusCode==200){
       print("Connection to server success! Response code is OK 👍");
       //print("This is the response body: ${response.body}");
@@ -47,7 +47,7 @@ class RequestServer{
     this.action="select username from UserTable where username=\"$username\"";
     this.Qtype="R";
     // var response= await getDecodedResponse();
-    http.Response response= await http.get("http://localhost/index.php?action=${action}&Qtype=${Qtype}");
+    http.Response response= await http.get(Uri.parse("http://localhost/index.php?action=${action}&Qtype=${Qtype}"));
     if(jsonDecode(response.body)=="Empty"){
       return false;
     }

@@ -21,7 +21,9 @@ Flutter Project for Database management
 </ul>
 
 ## How to run:
+
 <ol>
+    <li>Make sure Flutter SDK is configured properly. You may run <code>flutter doctor</code> to check this</li>
     <li>Clone this repository: <code>git clone https://github.com/lightningbolt047/dbms_project/</code></li>
     <li>For release build run: <code>flutter build <desired_package> --release</code></li>
     <li>For debug build run: <code>flutter build <desired_package> --debug</code></li>

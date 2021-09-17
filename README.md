@@ -18,6 +18,7 @@ Flutter Project for Database management
     <li>Admin can add or remove users</li>
     <li>Outlet managers can accept the order and proceed with delivery</li>
     <li>All user types have same login. Each user is redirected to a page based on their user type</li>
+    <li>And its a PWA. Users can install it as an app through their web browser and updates will be served automatically</li>
 </ul>
 
 ## How to run:

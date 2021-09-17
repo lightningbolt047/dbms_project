@@ -4,7 +4,7 @@ Flutter Project for Database management
 
 
 ## Living on the edge
-<p> <del>Flutter Web is currently in beta as of 30th September 2020.</del> <ins>Flutter Web is currently stable</ins>>. I've written a PHP script that simply executes queries and returns the results as json.</p>
+<p> <del>Flutter Web is currently in beta as of 30th September 2020.</del> <ins>Flutter Web is currently stable</ins>. I've written a PHP script that simply executes queries and returns the results as json.</p>
 
 # This project simplifies the production and distribution of dairy products.
 ## Features:
@@ -19,3 +19,10 @@ Flutter Project for Database management
     <li>Outlet managers can accept the order and proceed with delivery</li>
     <li>All user types have same login. Each user is redirected to a page based on their user type</li>
 </ul>
+
+## How to run:
+<ol>
+    <li>Clone this repository: <code>git clone https://github.com/lightningbolt047/dbms_project/</code></li>
+    <li>For release build run: <code>flutter build <desired_package> --release</code></li>
+    <li>For debug build run: <code>flutter build <desired_package> --debug</code></li>
+</ol>

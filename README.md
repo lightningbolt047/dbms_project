@@ -1,11 +1,21 @@
-# dairymanagement
+# Dairymanagement
 
 Flutter Project for Database management
 
 
-# This project is not standalone! Why?
 ## Living on the edge
-<p> Flutter web is currently in beta and does not support MySql plugins as of 30th September 2020. So, I've written a PHP script that simply takes the query as a string from this project, executes the query and returns the result as a json.</p>
+<p> <del>Flutter Web is currently in beta as of 30th September 2020.</del> <ins>Flutter Web is currently stable</ins>>. I've written a PHP script that simply executes queries and returns the results as json.</p>
 
-## You could have simply made some APIs in the php script and need not have passed the whole query from this project
-<p> Yes you are right, but I've done this way so that, once Flutter web begins supporting MySQL plugins, I can simply remove the http requests and use the queries directly without the need for a php server</p>
+# This project simplifies the production and distribution of dairy products.
+## Features:
+<ul>
+    <li>Obtain Milk from Milk Producers</li>
+    <li>Pay to Milk Producers at any time</li>
+    <li>View/Manage Employees and their salary</li>
+    <li>View/Manage Transport system status</li>
+    <li>Outlets can request for more stock from main office</li>
+    <li>Outlets can sell dairy products and stocks are updated in real time throughout the database</li>
+    <li>Admin can add or remove users</li>
+    <li>Outlet managers can accept the order and proceed with delivery</li>
+    <li>All user types have same login. Each user is redirected to a page based on their user type</li>
+</ul>
